@@ -70,7 +70,7 @@ async def on_message(message):
                 await message.channel.send(unmixedstr)
                 return
             elif w3b == 1:
-                input2 = input
+                input2 = input[1:]
                 error = 0
                 for l in range(len(input2)):
                     input = input2[l]
@@ -142,7 +142,7 @@ async def on_message(message):
                 await message.channel.send(unmixedstr)
                 return
             elif w4b == 1:
-                input2 = input
+                input2 = input[1:]
                 error = 0
                 for l in range(len(input2)):
                     input = input2[l]

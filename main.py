@@ -19,8 +19,7 @@ emojis = [
     '<:2_:859536749838991420>', '<:0_:859847678745247775>',
     '<:1_:859536749830471740>'
 ]
-invalidmovestr = '''Wittwer both fends off the dark forces you tried to bring into his
-                    realm and disarms you of your immortality within a quarter of a Planck interval.'''
+invalidmovestr = 'Wittwer both fends off the dark forces you tried to bring into his realm and disarms you of your immortality within a quarter of a Planck interval.'
 
 
 @client.event
@@ -49,11 +48,10 @@ async def on_message(message):
                     break
             await message.channel.send(printwitty(wittwer))
             await message.channel.send(
-                '''Witty has been mixed.\n
-                Use $l, $r, $u, $d to move a tile.\n
-                You can also queue commands, like $lddru (executes them from left to right until done or an impossible move).\n
-                While dismantled, Witty shall correct the analysis exams of the 421 universes under his guard at a mean rate of 68.9 Yottaflops.\n
-                Do not disappoint him.'''
+                'Witty has been mixed.\n'+'Use $l, $r, $u, $d to move a tile.\n'+
+                'You can also queue commands, like $lddru (executes them from left to right until done or an impossible move).\n'+
+                'While dismantled, Witty shall correct the analysis exams of the 421 universes under his guard at a mean rate of 68.9 Yottaflops.\n'+
+                'Do not disappoint him.'
             )
             return
 
@@ -129,8 +127,8 @@ async def on_message(message):
                 error = 1
                 wb = 0
                 await message.channel.send(
-                    '''Witty has been saved from your stupidity and can now carry on with waking
-                    you up every monday and wednesday at 8:15 with no remorse whatsoever.'''
+                    'Witty has been saved from your stupidity and can now carry on with waking '+
+                    'you up every monday and wednesday at 8:15 with no remorse whatsoever.'
                     + emojis[5] + emojis[6] +
                     '\n\n\nᵇᶦᵍ ᵍᵍ ᵗʰᵒᵘᵍʰ ᵗʰᶦˢ ᶦˢ ᵃᵐᵃᶻᶦⁿᵍ')
             return
@@ -144,16 +142,16 @@ async def on_message(message):
 
         elif input == 'plagueis':
             await message.channel.send(
-                '''Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not.
-                It’s not a story the Jedi would tell you. It’s a Sith legend.
-                Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he
-                could use the Force to influence the midichlorians to create life…
-                He had such a knowledge of the dark side that he could even keep the ones
-                he cared about from dying. The dark side of the Force is a pathway to many
-                abilities some consider to be unnatural. He became so powerful… the only
-                thing he was afraid of was losing his power, which eventually, of course, he did.
-                Unfortunately, he taught his apprentice everything he knew, then his apprentice
-                killed him in his sleep. Ironic. He could save others from death, but not himself.'''
+                'Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not. '+
+                'It’s not a story the Jedi would tell you. It’s a Sith legend. '+
+                'Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he '+
+                'could use the Force to influence the midichlorians to create life… '+
+                'He had such a knowledge of the dark side that he could even keep the ones '+
+                'he cared about from dying. The dark side of the Force is a pathway to many '+
+                'abilities some consider to be unnatural. He became so powerful… the only '+
+                'thing he was afraid of was losing his power, which eventually, of course, he did. '+
+                'Unfortunately, he taught his apprentice everything he knew, then his apprentice '+
+                'killed him in his sleep. Ironic. He could save others from death, but not himself.'
             )
             await message.channel.send('https://tenor.com/bk8ik.gif')
             return

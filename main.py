@@ -12,6 +12,7 @@ emojis = [
     '<:16:859536749982253076>', '<:15:859536749582745611>',
     '<:14:859536749708574721>', '<:13:859536749897056287>',
     '<:12:859536749922091068>', '<:11:859536749982384168>',
+    '<:10:859536749909770280>', '<:9_:859536749825622067>',
     '<:8_:859536749624557569>', '<:7_:859536749897056286>',
     '<:6_:859536749646839829>', '<:5_:859536749850918963>',
     '<:4_:859536749835452416>', '<:3_:859536749796786215>',
@@ -50,7 +51,7 @@ async def on_message(message):
             await message.channel.send(
                 '''Witty has been mixed.\n
                 Use $l, $r, $u, $d to move a tile.\n
-                You can also queue commands, like with $lddru (executes them from left to right until done or an impossible move).\n
+                You can also queue commands, like $lddru (executes them from left to right until done or an impossible move).\n
                 While dismantled, Witty shall correct the analysis exams of the 421 universes under his guard at a mean rate of 68.9 Yottaflops.\n
                 Do not disappoint him.'''
             )

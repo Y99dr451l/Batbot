@@ -221,13 +221,13 @@ async def on_message(message):
             await message.channel.send('me no understand')
             return
 #rest --------------------------------------------------------
-    elif set(message.content).issubset({'a','A'}) and message.content.len() > 2:
+    elif set(message.content).issubset({'a','A'}) and len(message.content) > 2:
         AAA = rng.integers(5,100)
         aaa = rng.integers(5,100)
         await message.channel.send(('A'*AAA)+('a'*aaa))
         return
     elif "lmao" in message.content:
-        if message.author.id == 287306245893914624:
+        if message.author.id == 181681253899042817:
             await message.add_reaction('<:lmaobassam:778739200257818636>')
         elif message.author.id == 287306245893914624:
             await message.add_reaction('<:lmaobatman:778740489960292352>')

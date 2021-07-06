@@ -221,7 +221,7 @@ async def on_message(message):
             await message.channel.send('me no understand')
             return
 #rest --------------------------------------------------------
-    elif message.content.issubset({'a','A'}) and message.content.len() > 2:
+    elif set(message.content).issubset({'a','A'}) and message.content.len() > 2:
         AAA = rng.integers(5,100)
         aaa = rng.integers(5,100)
         await message.channel.send(('A'*AAA)+('a'*aaa))

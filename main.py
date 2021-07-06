@@ -6,17 +6,17 @@ from keep_alive import keep_alive
 client = discord.Client()
 rng = numpy.random.default_rng()
 wittwer3 = numpy.zeros(9)
+wittwer4 = numpy.zeros(16)
 w3b = 0
 w3z = 0
+w4b = 0
+w4z = 0
 emojis3 = [
     '<:39:860269430537060382>', '<:38:860269430562095104>', '<:37:860269430490791966>',
     '<:36:860269430580051978>', '<:35:860269430629990412>', '<:34:860269430406381649>',
     '<:33:860269430466674728>', '<:32:860269430369550337>', '<:0_:859762589503586304>',
     '<:31:860269430385541120>'
 ]
-wittwer4 = numpy.zeros(16)
-w4b = 0
-w4z = 0
 emojis4 = [
     '<:16:859536749982253076>', '<:15:859536749582745611>', '<:14:859536749708574721>', '<:13:859536749897056287>',
     '<:12:859536749922091068>', '<:11:859536749982384168>', '<:10:859536749909770280>', '<:9_:859536749825622067>',
@@ -24,10 +24,11 @@ emojis4 = [
     '<:4_:859536749835452416>', '<:3_:859536749796786215>', '<:2_:859536749838991420>', '<:0_:859762589503586304>',
     '<:1_:859536749830471740>'
 ]
-mixedstr = 'Witty has been mixed. Use $xl, $xr, $xu, $xd to move a tile, replace x with 3 or 4 depending on the size of the grid. You can also queue commands, like $4lddru.'
-unmixedstr = 'You very foolishly attempted to move an unmixed Wittwer. Horrible things will happen.'
+prefixstr = '$'
+mixedstr = 'Witty has been mixed. Use l, r, u or d with the '+ prefixstr +' prefix to move a tile. You can also queue commands, like $lddru.'
+unmixedstr = 'You attempted to move an unmixed Wittwer. Horrible things will happen.'
 remixedstr = 'Wittwer was already mixed, remixing now.'
-invalidmovestr = 'Wittwer both fends off the dark forces you tried to bring into his realm and disarms you of your immortality within a quarter of a Planck interval.'
+invalidmovestr = 'This is not a valid move. Wittwer yells. You die.'
 winstr = 'Witty has been saved from your stupidity and can now carry on with waking you up every monday and wednesday at 8:15 with no remorse whatsoever.'+emojis4[5]+emojis4[6]
 winstr3 = '\n\n\nⁿᵒʷ ᵈᵒ ᵗʰᵉ ʰᵃʳᵈ ᵒⁿᵉ'
 winstr4 = '\n\n\nᵇᶦᵍ ᵍᵍ ᵗʰᵒᵘᵍʰ ᵗʰᶦˢ ᶦˢ ᵃᵐᵃᶻᶦⁿᵍ'
@@ -44,7 +45,7 @@ async def on_message(message):
     global w4b
     global w4z
     if message.author == client.user: return
-    if message.content.startswith('$'):
+    if message.content.startswith(prefixstr):
         input = message.content[1:]
         #puzzle commands ------------------------------------------
         if input == 'wmix3':

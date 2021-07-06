@@ -1,5 +1,6 @@
 import numpy
 import discord
+import os
 from keep_alive import keep_alive
 
 client = discord.Client()
@@ -246,4 +247,4 @@ def printw4(arrayinput):
     return ppwstr
 
 keep_alive()
-client.run('NjM4Nzc4MzMzMDQzMjI4Njkz.Xbhqrg.Xg0_06Lc0Ba30zBpo-j2ztd4CY0')
+client.run(os.environ.get('TOKEN'))

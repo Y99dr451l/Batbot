@@ -31,9 +31,9 @@ invalidmovestr = 'Wittwer both fends off the dark forces you tried to bring into
 winstr = 'Witty has been saved from your stupidity and can now carry on with waking you up every monday and wednesday at 8:15 with no remorse whatsoever.'+emojis4[5]+emojis4[6]
 winstr3 = '\n\n\nⁿᵒʷ ᵈᵒ ᵗʰᵉ ʰᵃʳᵈ ᵒⁿᵉ'
 winstr4 = '\n\n\nᵇᶦᵍ ᵍᵍ ᵗʰᵒᵘᵍʰ ᵗʰᶦˢ ᶦˢ ᵃᵐᵃᶻᶦⁿᵍ'
+
 @client.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+async def on_ready(): print('We have logged in as {0.user}'.format(client))
 
 @client.event
 async def on_message(message):
@@ -43,164 +43,134 @@ async def on_message(message):
     global wittwer4
     global w4b
     global w4z
-    if message.author == client.user:
-        return
+    if message.author == client.user: return
     if message.content.startswith('$'):
-        input = message.content[1:]  # removes $
-
-#puzzle commands ------------------------------------------
-
-    #33333333333333333333333333333333333333333333333333
+        input = message.content[1:]
+        #puzzle commands ------------------------------------------
         if input == 'wmix3':
-            if w3b == 1 or w4b == 1:
-                await message.channel.send(remixedstr)
+            if w3b == 1 or w4b == 1: await message.channel.send(remixedstr)
             w3b = 1
             w4b = 0
             wittwer3 = numpy.arange(9)
-            rng.shuffle(wittwer3)  # random
+            rng.shuffle(wittwer3)
             for n in range(0, 9):
                 if wittwer3[n] == 8:
-                    w3z = n  # tile with empty cell
+                    w3z = n
                     break
             await message.channel.send(printw3(wittwer3))
             await message.channel.send(mixedstr)
             return
-
-        elif set(input[1:]).issubset({'u', 'd', 'l', 'r'}) and input.startswith('3'):
-            if w3b == 0:
-                await message.channel.send(unmixedstr)
-                return
-            elif w3b == 1:
-                input2 = input[1:]
-                error = 0
-                for l in range(len(input2)):
-                    input = input2[l]
-                    if input == 'r' and error == 0:
-                        if w3z == 0 or w3z == 3 or w3z == 6:
-                            await message.channel.send(invalidmovestr)
-                            error = 1
-                        else:
-                            temp = wittwer3[w3z - 1]
-                            wittwer3[w3z - 1] = wittwer3[w3z]
-                            wittwer3[w3z] = temp
-                            w3z -= 1
-                    if input == 'l' and error == 0:
-                        if w3z == 2 or w3z == 5 or w3z == 8:
-                            await message.channel.send(invalidmovestr)
-                            error = 1
-                        else:
-                            temp = wittwer3[w3z + 1]
-                            wittwer3[w3z + 1] = wittwer3[w3z]
-                            wittwer3[w3z] = temp
-                            w3z += 1
-                    if input == 'd' and error == 0:
-                        if w3z == 0 or w3z == 1 or w3z == 2:
-                            await message.channel.send(invalidmovestr)
-                            error = 1
-                        else:
-                            temp = wittwer3[w3z - 3]
-                            wittwer3[w3z - 3] = wittwer3[w3z]
-                            wittwer3[w3z] = temp
-                            w3z -= 3
-                    if input == 'u' and error == 0:
-                        if w3z == 6 or w3z == 7 or w3z == 8:
-                            await message.channel.send(invalidmovestr)
-                            error = 1
-                        else:
-                            temp = wittwer3[w3z + 3]
-                            wittwer3[w3z + 3] = wittwer3[w3z]
-                            wittwer3[w3z] = temp
-                            w3z += 3
-            await message.channel.send(printw3(wittwer3))
-            cnt = 0
-            for n in range(9):
-                if wittwer3[n] == n:
-                    cnt += 1
-            if cnt == 9:
-                error = 1
-                w4b = 0
-                await message.channel.send(winstr+winstr3)
-            return  
-    
-    #44444444444444444444444444444444444444444444444444444444444444444444444444444
-        if input == 'wmix4':
-            if w3b == 1 or w4b == 1:
-                await message.channel.send(remixedstr)
+        elif input == 'wmix4':
+            if w3b == 1 or w4b == 1: await message.channel.send(remixedstr)
             w3b = 0
             w4b = 1
             wittwer4 = numpy.arange(16)
-            rng.shuffle(wittwer4)  # random
+            rng.shuffle(wittwer4)
             for n in range(0, 16):
                 if wittwer4[n] == 15:
-                    w4z = n  # tile with empty cell
+                    w4z = n
                     break
             await message.channel.send(printw4(wittwer4))
             await message.channel.send(mixedstr)
             return
-
-        elif set(input[1:]).issubset({'u', 'd', 'l', 'r'}) and input.startswith('4'):
-            if w4b == 0:
+        elif set(input).issubset({'u', 'd', 'l', 'r'}):
+            if w3b == w4b:
                 await message.channel.send(unmixedstr)
+                if w3b == 1:
+                    w3b = 0
+                    w4b = 0
                 return
-            elif w4b == 1:
-                input2 = input[1:]
-                error = 0
-                for l in range(len(input2)):
-                    input = input2[l]
-                    if input == 'r' and error == 0:
-                        if w4z == 0 or w4z == 4 or w4z == 8 or w4z == 12:
-                            await message.channel.send(invalidmovestr)
-                            error = 1
-                        else:
-                            temp = wittwer4[w4z - 1]
-                            wittwer4[w4z - 1] = wittwer4[w4z]
-                            wittwer4[w4z] = temp
-                            w4z -= 1
-                    if input == 'l' and error == 0:
-                        if w4z == 3 or w4z == 7 or w4z == 11 or w4z == 15:
-                            await message.channel.send(invalidmovestr)
-                            error = 1
-                        else:
-                            temp = wittwer4[w4z + 1]
-                            wittwer4[w4z + 1] = wittwer4[w4z]
-                            wittwer4[w4z] = temp
-                            w4z += 1
-                    if input == 'd' and error == 0:
-                        if w4z == 0 or w4z == 1 or w4z == 2 or w4z == 3:
-                            await message.channel.send(invalidmovestr)
-                            error = 1
-                        else:
-                            temp = wittwer4[w4z - 4]
-                            wittwer4[w4z - 4] = wittwer4[w4z]
-                            wittwer4[w4z] = temp
-                            w4z -= 4
-                    if input == 'u' and error == 0:
-                        if w4z == 12 or w4z == 13 or w4z == 14 or w4z == 15:
-                            await message.channel.send(invalidmovestr)
-                            error = 1
-                        else:
-                            temp = wittwer4[w4z + 4]
-                            wittwer4[w4z + 4] = wittwer4[w4z]
-                            wittwer4[w4z] = temp
-                            w4z += 4
-            await message.channel.send(printw4(wittwer4))
-            cnt = 0
-            for n in range(16):
-                if wittwer4[n] == n:
-                    cnt += 1
-            if cnt == 16:
-                error = 1
-                w4b = 0
-                await message.channel.send(winstr+winstr4)
-            return
-
-#random commands ------------------------------------------
+            error = 0
+            if w3b == 1 and w4b == 0:
+                while error == 0:
+                    for l in range(len(input)):
+                        input2 = input[l]
+                        if input2 == 'r':
+                            if w3z == 0 or w3z == 3 or w3z == 6: error = 1
+                            else:
+                                temp = wittwer3[w3z - 1]
+                                wittwer3[w3z - 1] = wittwer3[w3z]
+                                wittwer3[w3z] = temp
+                                w3z -= 1
+                        if input2 == 'l':
+                            if w3z == 2 or w3z == 5 or w3z == 8: error = 1
+                            else:
+                                temp = wittwer3[w3z + 1]
+                                wittwer3[w3z + 1] = wittwer3[w3z]
+                                wittwer3[w3z] = temp
+                                w3z += 1
+                        if input2 == 'd':
+                            if w3z == 0 or w3z == 1 or w3z == 2: error = 1
+                            else:
+                                temp = wittwer3[w3z - 3]
+                                wittwer3[w3z - 3] = wittwer3[w3z]
+                                wittwer3[w3z] = temp
+                                w3z -= 3
+                        if input2 == 'u':
+                            if w3z == 6 or w3z == 7 or w3z == 8: error = 1
+                            else:
+                                temp = wittwer3[w3z + 3]
+                                wittwer3[w3z + 3] = wittwer3[w3z]
+                                wittwer3[w3z] = temp
+                                w3z += 3
+                if error == 1: await message.channel.send(invalidmovestr)
+                await message.channel.send(printw3(wittwer3))
+                cnt = 0
+                for n in range(9):
+                    if wittwer3[n] == n: cnt += 1
+                if cnt == 9:
+                    error = 1
+                    w4b = 0
+                    await message.channel.send(winstr+winstr3)
+                return  
+            elif w3b == 0 and w4b == 1:
+                while error == 0:
+                    for l in range(len(input)):
+                        input2 = input[l]
+                        if input2 == 'r':
+                            if w4z == 0 or w4z == 4 or w4z == 8 or w4z == 12: error = 1
+                            else:
+                                temp = wittwer4[w4z - 1]
+                                wittwer4[w4z - 1] = wittwer4[w4z]
+                                wittwer4[w4z] = temp
+                                w4z -= 1
+                        if input2 == 'l' and error == 0:
+                            if w4z == 3 or w4z == 7 or w4z == 11 or w4z == 15: error = 1
+                            else:
+                                temp = wittwer4[w4z + 1]
+                                wittwer4[w4z + 1] = wittwer4[w4z]
+                                wittwer4[w4z] = temp
+                                w4z += 1
+                        if input2 == 'd' and error == 0:
+                            if w4z == 0 or w4z == 1 or w4z == 2 or w4z == 3: error = 1
+                            else:
+                                temp = wittwer4[w4z - 4]
+                                wittwer4[w4z - 4] = wittwer4[w4z]
+                                wittwer4[w4z] = temp
+                                w4z -= 4
+                        if input2 == 'u' and error == 0:
+                            if w4z == 12 or w4z == 13 or w4z == 14 or w4z == 15: error = 1
+                            else:
+                                temp = wittwer4[w4z + 4]
+                                wittwer4[w4z + 4] = wittwer4[w4z]
+                                wittwer4[w4z] = temp
+                                w4z += 4
+                if error == 1: await message.channel.send(invalidmovestr)
+                await message.channel.send(printw4(wittwer4))
+                cnt = 0
+                for n in range(16):
+                    if wittwer4[n] == n: cnt += 1
+                if cnt == 16:
+                    error = 1
+                    w4b = 0
+                    await message.channel.send(winstr+winstr4)
+                return
+        #random commands ------------------------------------------
         elif input == 'witty':
             wittweri = numpy.arange(16)
             wittweri[15] += 1
             await message.channel.send(printw4(wittweri))
             return
-
         elif input == 'plagueis':
             await message.channel.send(
                 'Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not. '+
@@ -216,11 +186,10 @@ async def on_message(message):
             )
             await message.channel.send('https://tenor.com/bk8ik.gif')
             return
-
         else:
             await message.channel.send('me no understand')
             return
-#rest --------------------------------------------------------
+    #rest --------------------------------------------------------
     elif set(message.content).issubset({'a','A'}) and len(message.content) > 2:
         AAA = rng.integers(5,100)
         aaa = rng.integers(5,100)
@@ -232,6 +201,7 @@ async def on_message(message):
         elif message.author.id == 287306245893914624:
             await message.add_reaction('<:lmaobatman:778740489960292352>')
 
+#functions --------------------------------------------------
 def printw3(arrayinput):
     global w3z
     ppwstr = ''

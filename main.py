@@ -81,38 +81,39 @@ async def on_message(message):
                     w4b = 0
                 return
             error = 0
+            l = 0
             if w3b == 1 and w4b == 0:
-                while error == 0:
-                    for l in range(len(input)):
-                        input2 = input[l]
-                        if input2 == 'r':
-                            if w3z == 0 or w3z == 3 or w3z == 6: error = 1
-                            else:
-                                temp = wittwer3[w3z - 1]
-                                wittwer3[w3z - 1] = wittwer3[w3z]
-                                wittwer3[w3z] = temp
-                                w3z -= 1
-                        if input2 == 'l':
-                            if w3z == 2 or w3z == 5 or w3z == 8: error = 1
-                            else:
-                                temp = wittwer3[w3z + 1]
-                                wittwer3[w3z + 1] = wittwer3[w3z]
-                                wittwer3[w3z] = temp
-                                w3z += 1
-                        if input2 == 'd':
-                            if w3z == 0 or w3z == 1 or w3z == 2: error = 1
-                            else:
-                                temp = wittwer3[w3z - 3]
-                                wittwer3[w3z - 3] = wittwer3[w3z]
-                                wittwer3[w3z] = temp
-                                w3z -= 3
-                        if input2 == 'u':
-                            if w3z == 6 or w3z == 7 or w3z == 8: error = 1
-                            else:
-                                temp = wittwer3[w3z + 3]
-                                wittwer3[w3z + 3] = wittwer3[w3z]
-                                wittwer3[w3z] = temp
-                                w3z += 3
+                while error == 0 and l < len(input):
+                    input2 = input[l]
+                    if input2 == 'r':
+                        if w3z == 0 or w3z == 3 or w3z == 6: error = 1
+                        else:
+                            temp = wittwer3[w3z - 1]
+                            wittwer3[w3z - 1] = wittwer3[w3z]
+                            wittwer3[w3z] = temp
+                            w3z -= 1
+                    if input2 == 'l':
+                        if w3z == 2 or w3z == 5 or w3z == 8: error = 1
+                        else:
+                            temp = wittwer3[w3z + 1]
+                            wittwer3[w3z + 1] = wittwer3[w3z]
+                            wittwer3[w3z] = temp
+                            w3z += 1
+                    if input2 == 'd':
+                        if w3z == 0 or w3z == 1 or w3z == 2: error = 1
+                        else:
+                            temp = wittwer3[w3z - 3]
+                            wittwer3[w3z - 3] = wittwer3[w3z]
+                            wittwer3[w3z] = temp
+                            w3z -= 3
+                    if input2 == 'u':
+                        if w3z == 6 or w3z == 7 or w3z == 8: error = 1
+                        else:
+                            temp = wittwer3[w3z + 3]
+                            wittwer3[w3z + 3] = wittwer3[w3z]
+                            wittwer3[w3z] = temp
+                            w3z += 3
+                    l += 1
                 if error == 1: await message.channel.send(invalidmovestr)
                 await message.channel.send(printw3(wittwer3))
                 cnt = 0
@@ -124,37 +125,37 @@ async def on_message(message):
                     await message.channel.send(winstr+winstr3)
                 return  
             elif w3b == 0 and w4b == 1:
-                while error == 0:
-                    for l in range(len(input)):
-                        input2 = input[l]
-                        if input2 == 'r':
-                            if w4z == 0 or w4z == 4 or w4z == 8 or w4z == 12: error = 1
-                            else:
-                                temp = wittwer4[w4z - 1]
-                                wittwer4[w4z - 1] = wittwer4[w4z]
-                                wittwer4[w4z] = temp
-                                w4z -= 1
-                        if input2 == 'l' and error == 0:
-                            if w4z == 3 or w4z == 7 or w4z == 11 or w4z == 15: error = 1
-                            else:
-                                temp = wittwer4[w4z + 1]
-                                wittwer4[w4z + 1] = wittwer4[w4z]
-                                wittwer4[w4z] = temp
-                                w4z += 1
-                        if input2 == 'd' and error == 0:
-                            if w4z == 0 or w4z == 1 or w4z == 2 or w4z == 3: error = 1
-                            else:
-                                temp = wittwer4[w4z - 4]
-                                wittwer4[w4z - 4] = wittwer4[w4z]
-                                wittwer4[w4z] = temp
-                                w4z -= 4
-                        if input2 == 'u' and error == 0:
-                            if w4z == 12 or w4z == 13 or w4z == 14 or w4z == 15: error = 1
-                            else:
-                                temp = wittwer4[w4z + 4]
-                                wittwer4[w4z + 4] = wittwer4[w4z]
-                                wittwer4[w4z] = temp
-                                w4z += 4
+                while error == 0 and l < len(input):
+                    input2 = input[l]
+                    if input2 == 'r':
+                        if w4z == 0 or w4z == 4 or w4z == 8 or w4z == 12: error = 1
+                        else:
+                            temp = wittwer4[w4z - 1]
+                            wittwer4[w4z - 1] = wittwer4[w4z]
+                            wittwer4[w4z] = temp
+                            w4z -= 1
+                    if input2 == 'l' and error == 0:
+                        if w4z == 3 or w4z == 7 or w4z == 11 or w4z == 15: error = 1
+                        else:
+                            temp = wittwer4[w4z + 1]
+                            wittwer4[w4z + 1] = wittwer4[w4z]
+                            wittwer4[w4z] = temp
+                            w4z += 1
+                    if input2 == 'd' and error == 0:
+                        if w4z == 0 or w4z == 1 or w4z == 2 or w4z == 3: error = 1
+                        else:
+                            temp = wittwer4[w4z - 4]
+                            wittwer4[w4z - 4] = wittwer4[w4z]
+                            wittwer4[w4z] = temp
+                            w4z -= 4
+                    if input2 == 'u' and error == 0:
+                        if w4z == 12 or w4z == 13 or w4z == 14 or w4z == 15: error = 1
+                        else:
+                            temp = wittwer4[w4z + 4]
+                            wittwer4[w4z + 4] = wittwer4[w4z]
+                            wittwer4[w4z] = temp
+                            w4z += 4
+                    l += 1
                 if error == 1: await message.channel.send(invalidmovestr)
                 await message.channel.send(printw4(wittwer4))
                 cnt = 0

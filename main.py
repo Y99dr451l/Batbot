@@ -25,13 +25,25 @@ emojis4 = [
     '<:1_:859536749830471740>'
 ]
 prefixstr = '$'
-mixedstr = 'Witty has been mixed. Use l, r, u or d with the '+ prefixstr +' prefix to move a tile. You can also queue commands, like $lddru.'
+mixedstr = 'Witty has been mixed. Use u, d, l and r with the '+ prefixstr +' prefix to move a tile. You can also queue commands, like '+prefixstr+'lddru.'
 unmixedstr = 'You attempted to move an unmixed Wittwer. Horrible things will happen.'
 remixedstr = 'Wittwer was already mixed, remixing now.'
 invalidmovestr = 'This is not a valid move. Wittwer yells. You die.'
 winstr = 'Witty has been saved from your stupidity and can now carry on with waking you up every monday and wednesday at 8:15 with no remorse whatsoever.'+emojis4[5]+emojis4[6]
 winstr3 = '\n\n\nⁿᵒʷ ᵈᵒ ᵗʰᵉ ʰᵃʳᵈ ᵒⁿᵉ'
 winstr4 = '\n\n\nᵇᶦᵍ ᵍᵍ ᵗʰᵒᵘᵍʰ ᵗʰᶦˢ ᶦˢ ᵃᵐᵃᶻᶦⁿᵍ'
+helpstr = '''***HELP***
+\n*The current prefix for the bot is '''+prefixstr+'''.*\n
+\n**Sliding puzzle**
+\n    *wmix3*: start a 3x3 puzzle
+\n    *wmix4*: start a 4x4 puzzle
+\n    *u/d/l/r*: move a tile up/down/left/right into the empty cell
+\n    *ulldr* (example): chained moves
+\n**Other commands**
+\n    *witty, plagueis, help*
+\n**Random stuff (without prefix)**
+\n    *yeet, bruh, aaa*
+\n    *lmao* (for selected users only)'''
 
 @client.event
 async def on_ready(): print('We have logged in as {0.user}'.format(client))
@@ -46,7 +58,7 @@ async def on_message(message):
     global w4z
     if message.author == client.user: return
     if message.content.startswith(prefixstr):
-        input = message.content[1:]
+        input = message.content[1:].lower()
         #puzzle commands ------------------------------------------
         if input == 'wmix3':
             if w3b == 1 or w4b == 1: await message.channel.send(remixedstr)
@@ -188,21 +200,25 @@ async def on_message(message):
             )
             await message.channel.send('https://tenor.com/bk8ik.gif')
             return
+        elif input == 'help': await message.channel.send(helpstr)  
+        
         else:
             await message.channel.send('me no understand')
-            return
-    #rest --------------------------------------------------------
-    elif set(message.content).issubset({'a','A'}) and len(message.content) > 2:
-        AAA = rng.integers(5,100)
-        aaa = rng.integers(5,100)
-        await message.channel.send(('A'*AAA)+('a'*aaa))
         return
-    elif "lmao" in message.content:
-        if message.author.id == 181681253899042817:
-            await message.add_reaction('<:lmaobassam:778739200257818636>')
-        elif message.author.id == 287306245893914624:
-            await message.add_reaction('<:lmaobatman:778740489960292352>')
+    #rest --------------------------------------------------------
+    else:
+        input = message.content.lower()
+        if set(input).issubset({'a',' ','.','!'}) and len(input) > 2: await message.channel.send('A'*rng.integers(1,2000))
+        if "lmao" in input:
+            if message.author.id == 181681253899042817:
+                await message.add_reaction('<:lmaobassam:778739200257818636>')
+            elif message.author.id == 287306245893914624:
+                await message.add_reaction('<:lmaobatman:778740489960292352>')
+        if "yeet" in input: await message.add_reaction('<:yeet:744153144040095784>')
+        if "bruh" in input: await message.add_reaction('<:bruh:786383332035788832>')
+        if message.mentions: await message.add_reaction('<:pandaping:822443133139812394>')
 
+    return
 #functions --------------------------------------------------
 def printw3(arrayinput):
     global w3z

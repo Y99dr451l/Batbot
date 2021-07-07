@@ -33,17 +33,18 @@ winstr = 'Witty has been saved from your stupidity and can now carry on with wak
 winstr3 = '\n\n\nⁿᵒʷ ᵈᵒ ᵗʰᵉ ʰᵃʳᵈ ᵒⁿᵉ'
 winstr4 = '\n\n\nᵇᶦᵍ ᵍᵍ ᵗʰᵒᵘᵍʰ ᵗʰᶦˢ ᶦˢ ᵃᵐᵃᶻᶦⁿᵍ'
 helpstr = '''***HELP***
-\n*The current prefix for the bot is '''+prefixstr+'''.*\n
-\n**Sliding puzzle**
-\n    *wmix3*: start a 3x3 puzzle
-\n    *wmix4*: start a 4x4 puzzle
-\n    *u/d/l/r*: move a tile up/down/left/right into the empty cell
-\n    *ulldr* (example): chained moves
-\n**Other commands**
-\n    *witty, plagueis, help*
-\n**Random stuff (without prefix)**
-\n    *yeet, bruh, aaa*
-\n    *lmao* (for selected users only)'''
+*The current prefix for the bot is '''+prefixstr+'''.*
+
+**Sliding puzzle**
+   • *wmix3*: start a 3x3 puzzle
+   • *wmix4*: start a 4x4 puzzle
+   • *u/d/l/r*: move a tile up/down/left/right into the empty cell
+   • *ulldr* (example): chained moves
+**Other commands**
+   • *witty, plagueis, help*
+**Random stuff (without prefix)**
+   • *yeet, bruh, aaa*
+   • *lmao* (for selected users only)'''
 
 @client.event
 async def on_ready(): print('We have logged in as {0.user}'.format(client))
@@ -208,7 +209,7 @@ async def on_message(message):
     #rest --------------------------------------------------------
     else:
         input = message.content.lower()
-        if set(input).issubset({'a',' ','.','!'}) and len(input) > 2: await message.channel.send('A'*rng.integers(1,2000))
+        if set(input).issubset({'a',' ','.','!'}) and len(input) > 2: await message.channel.send('A'*rng.integers(1,500))
         if "lmao" in input:
             if message.author.id == 181681253899042817:
                 await message.add_reaction('<:lmaobassam:778739200257818636>')

@@ -3,9 +3,12 @@ import discord
 import os
 from keep_alive import keep_alive
 from sympy.combinatorics.permutations import _af_parity
+import time
 
 client = discord.Client()
 rng = numpy.random.default_rng()
+starttime = time.monotonic()
+
 wittwer3 = numpy.zeros(9)
 wittwer4 = numpy.zeros(16)
 w3b = 0
@@ -211,9 +214,9 @@ async def on_message(message):
             await message.channel.send('https://tenor.com/bk8ik.gif')
             return
         elif input == 'help': await message.channel.send(helpstr)  
+        elif input == 'uptime': await message.channel.send('The bot has been up for '+str(time.monotonic()-starttime)+' seconds.')
         
-        else:
-            await message.channel.send('me no understand')
+        else: await message.channel.send('me no understand')
         return
     #rest --------------------------------------------------------
     else:

@@ -68,14 +68,16 @@ async def on_message(message):
             w4b = 0
             wittwer3 = numpy.arange(9)
             rng.shuffle(wittwer3)
+            reshfl = 0
             while _af_parity(wittwer3):
                 rng.shuffle(wittwer3)
+                reshfl += 1
             for n in range(0, 9):
                 if wittwer3[n] == 8:
                     w3z = n
                     break
             await message.channel.send(printw3(wittwer3))
-            await message.channel.send(mixedstr)
+            await message.channel.send(mixedstr+'\nThe grid has been reshuffled '+reshfl+' times.')
             return
         elif input == 'wmix4':
             if w3b == 1 or w4b == 1: await message.channel.send(remixedstr)
@@ -83,14 +85,16 @@ async def on_message(message):
             w4b = 1
             wittwer4 = numpy.arange(16)
             rng.shuffle(wittwer4)
+            reshfl = 0
             while _af_parity(wittwer4):
                 rng.shuffle(wittwer4)
+                reshfl += 1
             for n in range(0, 16):
                 if wittwer4[n] == 15:
                     w4z = n
                     break
             await message.channel.send(printw4(wittwer4))
-            await message.channel.send(mixedstr)
+            await message.channel.send(mixedstr+'\nThe grid has been reshuffled '+reshfl+' times.')
             return
         elif set(input).issubset({'u', 'd', 'l', 'r'}):
             if w3b == w4b:

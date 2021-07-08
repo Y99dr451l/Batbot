@@ -222,7 +222,7 @@ async def on_message(message):
         if "lmao" in input:
             if message.author.id == 181681253899042817: await message.add_reaction('<:lmaobassam:778739200257818636>')
             elif message.author.id == 287306245893914624: await message.add_reaction('<:lmaobatman:778740489960292352>')
-            elif message.author.id == 449557998004862987: await message.add_reaction('<:lmaojoda:862715413573271594>')
+            elif message.author.id == 449557998004862987: await message.add_reaction('<:lmaojonas:862717541780160542>')
         if "yeet" in input: await message.add_reaction('<:yeet:744153144040095784>')
         if "bruh" in input: await message.add_reaction('<:bruh:786383332035788832>')
         if '@' in input: await message.add_reaction('<:pandaping:822443133139812394>')

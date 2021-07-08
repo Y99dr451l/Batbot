@@ -2,6 +2,7 @@ import numpy
 import discord
 import os
 from keep_alive import keep_alive
+from sympy.combinatorics.permutations import _af_parity
 
 client = discord.Client()
 rng = numpy.random.default_rng()
@@ -67,6 +68,8 @@ async def on_message(message):
             w4b = 0
             wittwer3 = numpy.arange(9)
             rng.shuffle(wittwer3)
+            while _af_parity(wittwer3):
+                rng.shuffle(wittwer3)
             for n in range(0, 9):
                 if wittwer3[n] == 8:
                     w3z = n
@@ -80,6 +83,8 @@ async def on_message(message):
             w4b = 1
             wittwer4 = numpy.arange(16)
             rng.shuffle(wittwer4)
+            while _af_parity(wittwer4):
+                rng.shuffle(wittwer4)
             for n in range(0, 16):
                 if wittwer4[n] == 15:
                     w4z = n
@@ -211,13 +216,11 @@ async def on_message(message):
         input = message.content.lower()
         if set(input).issubset({'a',' ','.','!'}) and len(input) > 2: await message.channel.send('A'*rng.integers(1,500))
         if "lmao" in input:
-            if message.author.id == 181681253899042817:
-                await message.add_reaction('<:lmaobassam:778739200257818636>')
-            elif message.author.id == 287306245893914624:
-                await message.add_reaction('<:lmaobatman:778740489960292352>')
+            if message.author.id == 181681253899042817: await message.add_reaction('<:lmaobassam:778739200257818636>')
+            elif message.author.id == 287306245893914624: await message.add_reaction('<:lmaobatman:778740489960292352>')
         if "yeet" in input: await message.add_reaction('<:yeet:744153144040095784>')
         if "bruh" in input: await message.add_reaction('<:bruh:786383332035788832>')
-        if message.mentions: await message.add_reaction('<:pandaping:822443133139812394>')
+        if '@' in input: await message.add_reaction('<:pandaping:822443133139812394>')
 
     return
 #functions --------------------------------------------------

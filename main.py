@@ -29,7 +29,7 @@ emojis4 = [
     '<:1_:859536749830471740>'
 ]
 prefixstr = '$'
-mixedstr = 'Witty has been mixed. Use u, d, l and r with the '+ prefixstr +' prefix to move a tile. You can also queue commands, like '+prefixstr+'lddru.'
+mixedstr = 'Witty has been mixed. Use u, d, l and r with the '+prefixstr+' prefix to move a tile. You can also queue commands, like '+prefixstr+'lddru.'
 unmixedstr = 'You attempted to move an unmixed Wittwer. Horrible things will happen.'
 remixedstr = 'Wittwer was already mixed, remixing now.'
 invalidmovestr = 'This is not a valid move. Wittwer yells. You die.'
@@ -45,7 +45,7 @@ helpstr = '''***HELP***
    • *u/d/l/r*: move a tile up/down/left/right into the empty cell
    • *ulldr* (example): chained moves
 **Other commands**
-   • *witty, plagueis, help*
+   • *witty, plagueis, help, uptime*
 **Random stuff (without prefix)**
    • *yeet, bruh, aaa*
    • *lmao* (for selected users only)'''

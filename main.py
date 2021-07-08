@@ -77,7 +77,7 @@ async def on_message(message):
                     w3z = n
                     break
             await message.channel.send(printw3(wittwer3))
-            await message.channel.send(mixedstr+'\nThe grid has been reshuffled '+reshfl+' times.')
+            await message.channel.send(mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.')
             return
         elif input == 'wmix4':
             if w3b == 1 or w4b == 1: await message.channel.send(remixedstr)
@@ -94,7 +94,7 @@ async def on_message(message):
                     w4z = n
                     break
             await message.channel.send(printw4(wittwer4))
-            await message.channel.send(mixedstr+'\nThe grid has been reshuffled '+reshfl+' times.')
+            await message.channel.send(mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.')
             return
         elif set(input).issubset({'u', 'd', 'l', 'r'}):
             if w3b == w4b:

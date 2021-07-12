@@ -37,18 +37,18 @@ winstr = 'Witty has been saved from your stupidity and can now carry on with wak
 winstr3 = '\n\n\nⁿᵒʷ ᵈᵒ ᵗʰᵉ ʰᵃʳᵈ ᵒⁿᵉ'
 winstr4 = '\n\n\nᵇᶦᵍ ᵍᵍ ᵗʰᵒᵘᵍʰ ᵗʰᶦˢ ᶦˢ ᵃᵐᵃᶻᶦⁿᵍ'
 helpstr = '''***HELP***
-*The current prefix for the bot is '''+prefixstr+'''.*
+The current prefix for the bot is `'''+prefixstr+'''`.
 
 **Sliding puzzle**
-   • *wmix3*: start a 3x3 puzzle
-   • *wmix4*: start a 4x4 puzzle
-   • *u/d/l/r*: move a tile up/down/left/right into the empty cell
-   • *ulldr* (example): chained moves
+   • `wmix3`: start a 3x3 puzzle
+   • `wmix4`: start a 4x4 puzzle
+   • `u`/`d`/`l`/`r`: move a tile up/down/left/right into the empty cell
+   • `ulldr` (example): chained moves
 **Other commands**
-   • *witty, plagueis, help, uptime*
+   • `witty`, `plagueis`, `help`, `uptime`
 **Random stuff (without prefix)**
-   • *yeet, bruh, aaa*
-   • *lmao* (for selected users only)'''
+   • `yeet`, `bruh`, `aaa`
+   • `lmao` (for selected users only)'''
 
 @client.event
 async def on_ready(): print('We have logged in as {0.user}'.format(client))
@@ -99,7 +99,7 @@ async def on_message(message):
             await message.channel.send(printw4(wittwer4))
             await message.channel.send(mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.')
             return
-        elif set(input).issubset({'u', 'd', 'l', 'r'}):
+        elif set(input).issubset({'u','d','l','r'}):
             if w3b == w4b:
                 await message.channel.send(unmixedstr)
                 if w3b == 1:

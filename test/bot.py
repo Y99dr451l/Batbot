@@ -26,7 +26,7 @@ async def on_ready():
 async def on_member_remove(member):
     print(f'{member} has left a server.')
 
-@client.command
+@client.command(aliases=['ping'])
 async def ping(ctx):
     await ctx.send(f'{client.latency*1000}ms')
 
@@ -35,17 +35,17 @@ def is_admin():
     def predicate(ctx):
         return ctx.message.author.id in admins
 
-@client.command
+@client.command()
 @commands.check(is_admin)
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
 
-@client.command
+@client.command()
 @commands.check(is_admin)
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
 
-@client.command
+@client.command()
 @commands.check(is_admin)
 async def reload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')

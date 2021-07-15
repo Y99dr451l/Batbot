@@ -18,7 +18,7 @@ async def on_ready():
         if filename.endswith('.py'):
             client.load_extension(f'cogs.{filename[:-3]}')
             print(f'Loaded {filename}')
-    await client.change_presence(activity=discord.Game('currently testing'), status=idle)
+    await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
     print(f'Bot is ready and logged in as {client.user}'.format(client))
 
 @client.event

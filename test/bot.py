@@ -3,7 +3,8 @@ from discord.ext import commands
 import os
 from keep_alive import keep_alive
 
-client = commands.Bot(command_prefix = '$')
+intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
+client = commands.Bot(command_prefix = '$', intents = intents)
 
 admins_file = open('admins.txt', 'r')
 admins = admins_file.read().split(',')

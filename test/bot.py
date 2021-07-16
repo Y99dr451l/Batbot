@@ -27,8 +27,8 @@ async def ping(ctx):
     await ctx.send(f'{client.latency*1000}ms')
 
 # COGS
-def is_admin():
-    return client.message.author.id in admins
+def is_admin(ctx):
+    return ctx.author.id in admins
 
 @client.command()
 @commands.check(is_admin)

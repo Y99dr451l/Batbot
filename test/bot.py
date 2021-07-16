@@ -28,8 +28,7 @@ async def ping(ctx):
 
 # COGS
 def is_admin():
-    def predicate(ctx):
-        return ctx.message.author.id in admins
+    return client.message.author.id in admins
 
 @client.command()
 @commands.check(is_admin)

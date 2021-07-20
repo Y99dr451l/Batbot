@@ -1,14 +1,14 @@
+from asyncio.windows_events import ERROR_CONNECTION_REFUSED
+import os
+from test.utils.functions import bool_switch
+from test.utils.checks import is_admin
 import discord
 from discord.ext import commands
-import os
 from keep_alive import keep_alive
 
 intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 client = commands.Bot(command_prefix = '$', intents = intents)
-
-admins_file = open('admins.txt', 'r')
-admins = admins_file.read().split(',')
-admins_file.close()
+en_testing = 0
 
 @client.event
 async def on_ready():
@@ -26,10 +26,14 @@ async def on_member_remove(member):
 async def ping(ctx):
     await ctx.send(f'{client.latency*1000}ms')
 
-# COGS
-def is_admin(ctx):
-    return ctx.author.id in admins
+@client.command(aliases = ['mode'])
+@commands.check(is_admin)
+async def switch_modes(ctx, en_testing):
+    en_testing = bool_switch(en_testing)
+    if en_testing == 1: await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
+    else: await client.change_presence(activity=discord.Game('yeet'), status=discord.Status.online)
 
+# COGS
 @client.command()
 @commands.check(is_admin)
 async def load(ctx, extension):

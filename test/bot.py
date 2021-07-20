@@ -1,5 +1,6 @@
-from asyncio.windows_events import ERROR_CONNECTION_REFUSED
 import os
+
+from discord.ext.commands.errors import MissingRequiredArgument
 from test.utils.functions import bool_switch
 from test.utils.checks import is_admin
 import discord
@@ -53,8 +54,8 @@ async def reload(ctx, extension):
 # ERRORS
 @client.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        await ctx.send('Invalid command used.')
+    if isinstance(error, commands.CommandNotFound): await ctx.send('Invalid command.')
+    if isinstance(error, MissingRequiredArgument): await ctx.send('Invalid or missing argument.')
 
 # LOAD COGS
 for filename in os.listdir('./cogs'):

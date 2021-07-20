@@ -1,5 +1,5 @@
-from test.utils.checks import is_admin
-from test.utils.functions import bool_switch
+from ..utils.checks import is_admin
+from ..utils.functions import bool_switch
 import discord
 from discord.ext import commands
 

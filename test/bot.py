@@ -1,8 +1,8 @@
 import os
 
 from discord.ext.commands.errors import MissingRequiredArgument
-from utils.functions import bool_switch
-from utils.checks import is_admin
+from .utils.functions import bool_switch
+from .utils.checks import is_admin
 import discord
 from discord.ext import commands
 from keep_alive import keep_alive

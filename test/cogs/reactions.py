@@ -1,5 +1,5 @@
 # from ..utils.checks import is_admin
-from ..utils.functions import bool_switch
+# from ..utils.functions import bool_switch
 import discord
 from discord.ext import commands
 from discord.ext.commands import is_owner

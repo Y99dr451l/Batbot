@@ -1,6 +1,6 @@
 from discord.ext.commands.errors import MissingRequiredArgument
 from discord.ext.commands.help import MinimalHelpCommand
-from .utils.functions import bool_switch
+# from .utils.functions import bool_switch
 # from .utils.checks import is_admin
 import os
 import discord

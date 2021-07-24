@@ -9,7 +9,7 @@ from discord.ext import commands
 from discord.ext.commands import is_owner
 from keep_alive import keep_alive
 
-client = commands.Bot(command_prefix = ['$', '$ '], owner_id = 287306245893914624, intents = Intents.all())
+client = commands.Bot(command_prefix = ['$', '$ '], owner_id = 638778333043228693, intents = Intents.all())
 en_testing = 0
 
 @client.event

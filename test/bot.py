@@ -17,7 +17,7 @@ async def on_ready():
     print(f'Bot is almost ready.')
     for guild in client.guilds:
         print(f'On {guild} (id {guild.id})')
-    await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
+    switch_modes()
     print(f'Bot is ready and logged in as {client.user}'.format(client))
 
 @client.event

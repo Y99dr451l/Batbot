@@ -47,6 +47,7 @@ class Reactions(commands.Cog):
             if ctx.author.id == 181681253899042817: await ctx.add_reaction('<:lmaobassam:778739200257818636>')
             elif ctx.author.id == 287306245893914624: await ctx.add_reaction('<:lmaobatman:778740489960292352>')
             elif ctx.author.id == 449557998004862987: await ctx.add_reaction('<:lmaojonas:862717541780160542>')
+            #else: await ctx.add_reaction('')
         if "yeet" in ctx.content.lower() and self.en_yeet: await ctx.add_reaction('<:yeet:744153144040095784>')
         if "bruh" in ctx.content.lower() and self.en_bruh: await ctx.add_reaction('<:bruh:786383332035788832>')
         if '@' in ctx.content.lower() and self.en_ping: await ctx.add_reaction('<:pandaping:822443133139812394>')

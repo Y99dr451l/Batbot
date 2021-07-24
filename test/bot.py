@@ -1,14 +1,15 @@
-import os
-
 from discord.ext.commands.errors import MissingRequiredArgument
+from discord.ext.commands.help import MinimalHelpCommand
 from .utils.functions import bool_switch
-from .utils.checks import is_admin
+# from .utils.checks import is_admin
+import os
 import discord
+from discord import Intents
 from discord.ext import commands
+from discord.ext.commands import is_owner
 from keep_alive import keep_alive
 
-intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
-client = commands.Bot(command_prefix = '$', intents = intents)
+client = commands.Bot(command_prefix = ['$', '$ '], owner_id = 287306245893914624, intents = Intents.all())
 en_testing = 0
 
 @client.event
@@ -28,7 +29,7 @@ async def ping(ctx):
     await ctx.send(f'{client.latency*1000}ms')
 
 @client.command(aliases = ['mode'])
-@commands.check(is_admin)
+@is_owner()
 async def switch_modes(ctx, en_testing):
     en_testing = bool_switch(en_testing)
     if en_testing == 1: await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
@@ -36,20 +37,20 @@ async def switch_modes(ctx, en_testing):
 
 # COGS
 @client.command()
-@commands.check(is_admin)
+@is_owner()
 async def load(ctx, extension):
-    client.load_extension(f'cogs.{extension}')
+    client.load_extension(f'test.cogs.{extension}')
 
 @client.command()
-@commands.check(is_admin)
+@is_owner()
 async def unload(ctx, extension):
-    client.unload_extension(f'cogs.{extension}')
+    client.unload_extension(f'test.cogs.{extension}')
 
 @client.command()
-@commands.check(is_admin)
+@is_owner()
 async def reload(ctx, extension):
-    client.unload_extension(f'cogs.{extension}')
-    client.load_extension(f'cogs.{extension}')
+    client.unload_extension(f'test.cogs.{extension}')
+    client.load_extension(f'test.cogs.{extension}')
 
 # ERRORS
 @client.event
@@ -58,9 +59,9 @@ async def on_command_error(ctx, error):
     if isinstance(error, MissingRequiredArgument): await ctx.send('Invalid or missing argument.')
 
 # LOAD COGS
-for filename in os.listdir('./cogs'):
+for filename in os.listdir('./test/cogs'):
     if filename.endswith('.py'):
-        client.load_extension(f'cogs.{filename[:-3]}')
+        client.load_extension(f'test.cogs.{filename[:-3]}')
         print(f'Loaded {filename}')
 
 keep_alive()

@@ -1,7 +1,8 @@
-from ..utils.checks import is_admin
+# from ..utils.checks import is_admin
 from ..utils.functions import bool_switch
 import discord
 from discord.ext import commands
+from discord.ext.commands import is_owner
 
 class Reactions(commands.Cog):
     
@@ -16,23 +17,23 @@ class Reactions(commands.Cog):
 
     # admin commands
     @commands.command()
-    @commands.check(is_admin)
-    async def lmao(self, ctx, en_lmao):
+    @is_owner()
+    async def rlmao(self, ctx, en_lmao):
         en_lmao = bool_switch(en_lmao)
 
     @commands.command()
-    @commands.check(is_admin)
-    async def yeet(self, ctx, en_yeet):
+    @is_owner()
+    async def ryeet(self, ctx, en_yeet):
         en_yeet = bool_switch(en_yeet)
 
     @commands.command()
-    @commands.check(is_admin)
-    async def bruh(self, ctx, en_bruh):
+    @is_owner()
+    async def rbruh(self, ctx, en_bruh):
         en_bruh = bool_switch(en_bruh)
     
-    @commands.command(aliases = ['@ping'])
-    @commands.check(is_admin)
-    async def ping(self, ctx, en_ping):
+    @commands.command()
+    @is_owner()
+    async def rping(self, ctx, en_ping):
         en_ping = bool_switch(en_ping)
 
     # events

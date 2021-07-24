@@ -31,8 +31,8 @@ async def ping(ctx):
 @client.command(aliases = ['mode'])
 @is_owner()
 async def switch_modes(ctx, en_testing):
-    en_testing = bool_switch(en_testing)
-    if en_testing == 1: await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
+    en_testing = not en_testing
+    if en_testing: await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
     else: await client.change_presence(activity=discord.Game('yeet'), status=discord.Status.online)
 
 # COGS

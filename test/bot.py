@@ -86,5 +86,4 @@ for filename in os.listdir(other_cog_path):
         print(f'Loaded {filename}')
 
 keep_alive()
-#client.run(os.environ.get('TOKEN'))
-client.run('NjM4Nzc4MzMzMDQzMjI4Njkz.Xbhqrg._UBi9sW_ClyiPa28s6PFbytmAu4')
+client.run(os.environ.get('TOKEN'))

@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 import numpy
 from sympy.combinatorics.permutations import _af_parity
-import time
 
 class Witty(commands.Cog):
     
@@ -15,7 +14,6 @@ class Witty(commands.Cog):
 
     # variables
     rng = numpy.random.default_rng()
-    starttime = time.monotonic()
     wittwer3 = numpy.zeros(9)
     wittwer4 = numpy.zeros(16)
     w3b = 0

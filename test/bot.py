@@ -1,18 +1,18 @@
-from discord.ext.commands.errors import MissingRequiredArgument
-from discord.ext.commands.help import MinimalHelpCommand
-# from .utils.functions import bool_switch
-# from .utils.checks import is_admin
+from discord.ext.commands.errors import MissingPermissions, MissingRequiredArgument
+# from discord.ext.commands.help import MinimalHelpCommand
 import os
 import discord
+import time
 from discord import Intents
 from discord.ext import commands
 from discord.ext.commands import is_owner
 from keep_alive import keep_alive
 
 client = commands.Bot(command_prefix = ['$', '$ '], owner_id = 287306245893914624, intents = Intents.all())
-en_testing = 0
 cog_path = 'test.cogs.'
 other_cog_path = './test/cogs'
+en_testing = 0
+starttime = time.monotonic()
 
 @client.event
 async def on_ready():
@@ -21,6 +21,20 @@ async def on_ready():
         print(f'On {guild} (id {guild.id})')
     await switch_status()
     print(f'Bot is ready and logged in as {client.user}'.format(client))
+
+# GENERAL
+@client.command(aliases = ['up', 'ut', 'alive'])
+async def uptime(ctx):
+    uptime = time.monotonic()-starttime
+    utdys = uptime/(3600*24)
+    uthrs = uptime/3600-utdys*24
+    utmin = uptime/60-uthrs*60-utdys*60*24
+    utsec = uptime-utmin*60-uthrs*3600-utdys*3600*24
+    output = 'The bot has been up for '
+    if utdys: output += f'{utdys} days, '
+    if uthrs: output += f'{uthrs} hours, '
+    if utmin: output += f'{utmin} minutes, '
+    await ctx.send(output + f'{utsec} seconds.')
 
 @client.event
 async def on_member_remove(member):
@@ -62,7 +76,8 @@ async def reload(ctx, extension):
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound): await ctx.send('Invalid command.')
-    if isinstance(error, MissingRequiredArgument): await ctx.send('Invalid or missing argument.')
+    elif isinstance(error, MissingRequiredArgument): await ctx.send('Invalid or missing argument.')
+    elif isinstance(error, MissingPermissions): await ctx.send('Missing permissions.')
 
 # LOAD COGS
 for filename in os.listdir(other_cog_path):
@@ -71,5 +86,5 @@ for filename in os.listdir(other_cog_path):
         print(f'Loaded {filename}')
 
 keep_alive()
-print(str(os.environ.get('TOKEN'))+'\n')
-client.run(os.environ.get('TOKEN'))
+#client.run(os.environ.get('TOKEN'))
+client.run('NjM4Nzc4MzMzMDQzMjI4Njkz.Xbhqrg._UBi9sW_ClyiPa28s6PFbytmAu4')

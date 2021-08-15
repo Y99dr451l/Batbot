@@ -26,9 +26,9 @@ async def on_ready():
 @client.command(aliases = ['up', 'ut', 'alive'])
 async def uptime(ctx):
     uptime = time.monotonic()-starttime
-    utdys = uptime/(3600*24)
-    uthrs = uptime/3600-utdys*24
-    utmin = uptime/60-uthrs*60-utdys*60*24
+    utdys = uptime//(3600*24)
+    uthrs = uptime//3600-utdys*24
+    utmin = uptime//60-uthrs*60-utdys*60*24
     utsec = uptime-utmin*60-uthrs*3600-utdys*3600*24
     output = 'The bot has been up for '
     if utdys: output += f'{utdys} days, '

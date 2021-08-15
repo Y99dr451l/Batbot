@@ -13,16 +13,15 @@ class Math(commands.Cog):
 
     @commands.command(aliases = ['pf'])
     async def prime(ctx, input):
-        output = f'The prime factors of {input} are '
+        output = f'The prime factors of {int(input)} are '
         number = input
-        for i in range(2, math.sqrt(input)):
+        for i in range(2, math.ceil(math.sqrt(input))):
             if number % i == 0:
                 number = number / i
                 output = output + f'{i}, '
                 i = i - 1
         if number == input:
-            await ctx.send(f'{input} is a prime number!')
-        else: await ctx.send(output[:-2] + f' and {number}.')
-
+            await ctx.send(f'{int(input)} is a prime number!')
+        else: await ctx.send(output[:-2] + f' and {int(number)}.')
 def setup(client):
     client.add_cog(Math(client))

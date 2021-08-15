@@ -21,9 +21,9 @@ class Math(commands.Cog):
                 number = number / i
                 output = output + f'{i}, '
             else: i += 1
-        if number == input:
-            await ctx.send(f'{int(input)} is a prime number!')
-        else: await ctx.send(output[:-2] + f' and {int(number)}.')
+        if number == input: output = f'{int(input)} is a prime number!'
+        else: output = output[:-2] + f' and {int(number)}.'
+        await ctx.send(output)
 
 def setup(client):
     client.add_cog(Math(client))

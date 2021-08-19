@@ -12,18 +12,19 @@ class Math(commands.Cog):
         print(f'Cog {self} loaded.')
 
     @commands.command(aliases = ['pf'])
-    async def prime(ctx, input):
-        output = f'The prime factors of {int(input)} are '
-        number = input
+    async def prime(ctx, number):
+        n = int(number)
+        verification = int(number)
         i = 2
-        while i < math.sqrt(input):
-            if number % i == 0:
-                number = number / i
-                output = output + f'{i}, '
-            else: i += 1
-        if number == input: output = f'{int(input)} is a prime number!'
-        else: output = output[:-2] + f' and {int(number)}.'
-        await ctx.send(output)
+        factors = []
+        while i * i <= n:
+            if n % i: i += 1
+            else:
+                n //= i
+                factors.append(i)
+        if n > 1: factors.append(n)
+        if verification in factors: await ctx.send(f'{n} is a prime number!')
+        else: await ctx.send(f'The prime factors of {n} are {factors}') 
 
 def setup(client):
     client.add_cog(Math(client))

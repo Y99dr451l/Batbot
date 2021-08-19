@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import is_owner
+import numpy
 
 class Reactions(commands.Cog):
     
@@ -16,6 +17,9 @@ class Reactions(commands.Cog):
     en_yeet = 1
     en_bruh = 1
     en_ping = 1
+    en_aaa = 1
+
+    rng = numpy.random.default_rng()
 
     # admin commands
     @commands.command()
@@ -38,6 +42,11 @@ class Reactions(commands.Cog):
     async def ping(self, ctx):
         self.en_ping = not self.en_ping
 
+    @commands.command()
+    @is_owner()
+    async def aaa(self, ctx):
+        self.en_aaa = not self.en_aaa
+
     # events
     @commands.Cog.listener()
     async def on_message(self, ctx):
@@ -50,6 +59,7 @@ class Reactions(commands.Cog):
             if "yeet" in ctx.content.lower() and self.en_yeet: await ctx.add_reaction('<:yeet:744153144040095784>')
             if "bruh" in ctx.content.lower() and self.en_bruh: await ctx.add_reaction('<:bruh:786383332035788832>')
             if '@' in ctx.content.lower() and self.en_ping: await ctx.add_reaction('<:pandaping:822443133139812394>')
+            if set(input).issubset({'a'}) and len(input) > 2: await ctx.send('A'*self.rng.integers(1,500))
 
 def setup(client):
     client.add_cog(Reactions(client))

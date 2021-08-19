@@ -35,6 +35,8 @@ class Witty(commands.Cog):
     ]
     remixedstr = 'Wittwer was already mixed, remixing now.'
     unmixedstr = 'Wittwer isn\'t mixed yet.'
+    invalidmovestr = 'This is not a valid move.'
+    winstr = 'You won!'
 
     @commands.command()
     async def wmix3(self, ctx):
@@ -72,6 +74,103 @@ class Witty(commands.Cog):
         await ctx.send(self.printw4(self.wittwer4))
         await ctx.send(self.mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.')
 
+    @commands.command(aliases = ['m'])
+    async def move(self, ctx, moves):
+        if set(moves).issubset({'u','d','l','r'}):
+            if self.w3b == self.w4b:
+                if self.w3b == 1:
+                    w3b = 0
+                    w4b = 0
+                await ctx.send(self.unmixedstr)
+                return
+            error = 0
+            l = 0
+            if self.w3b == 1 and self.w4b == 0:
+                while error == 0 and l < len(moves):
+                    input2 = moves[l]
+                    if input2 == 'r':
+                        if self.w3z == 0 or self.w3z == 3 or self.w3z == 6: error = 1
+                        else:
+                            temp = self.wittwer3[self.w3z - 1]
+                            self.wittwer3[self.w3z - 1] = self.wittwer3[self.w3z]
+                            self.wittwer3[self.w3z] = temp
+                            self.w3z -= 1
+                    elif input2 == 'l':
+                        if self.w3z == 2 or self.w3z == 5 or self.w3z == 8: error = 1
+                        else:
+                            temp = self.wittwer3[self.w3z + 1]
+                            self.wittwer3[self.w3z + 1] = self.wittwer3[self.w3z]
+                            self.wittwer3[self.w3z] = temp
+                            self.w3z += 1
+                    elif input2 == 'd':
+                        if self.w3z == 0 or self.w3z == 1 or self.w3z == 2: error = 1
+                        else:
+                            temp = self.wittwer3[self.w3z - 3]
+                            self.wittwer3[self.w3z - 3] = self.wittwer3[self.w3z]
+                            self.wittwer3[self.w3z] = temp
+                            self.w3z -= 3
+                    elif input2 == 'u':
+                        if self.w3z == 6 or self.w3z == 7 or self.w3z == 8: error = 1
+                        else:
+                            temp = self.wittwer3[self.w3z + 3]
+                            self.wittwer3[self.w3z + 3] = self.wittwer3[self.w3z]
+                            self.wittwer3[self.w3z] = temp
+                            self.w3z += 3
+                    l += 1
+                if error == 1: await ctx.send(self.invalidmovestr)
+                await ctx.send(self.printw3(self.wittwer3))
+                cnt = 0
+                for n in range(9):
+                    if self.wittwer3[n] == n: cnt += 1
+                if cnt == 9:
+                    error = 1
+                    w4b = 0
+                    await ctx.send(self.winstr)
+                return  
+            """ elif w3b == 0 and w4b == 1:
+                while error == 0 and l < len(input):
+                    input2 = input[l]
+                    if input2 == 'r':
+                        if w4z == 0 or w4z == 4 or w4z == 8 or w4z == 12: error = 1
+                        else:
+                            temp = wittwer4[w4z - 1]
+                            wittwer4[w4z - 1] = wittwer4[w4z]
+                            wittwer4[w4z] = temp
+                            w4z -= 1
+                    if input2 == 'l' and error == 0:
+                        if w4z == 3 or w4z == 7 or w4z == 11 or w4z == 15: error = 1
+                        else:
+                            temp = wittwer4[w4z + 1]
+                            wittwer4[w4z + 1] = wittwer4[w4z]
+                            wittwer4[w4z] = temp
+                            w4z += 1
+                    if input2 == 'd' and error == 0:
+                        if w4z == 0 or w4z == 1 or w4z == 2 or w4z == 3: error = 1
+                        else:
+                            temp = wittwer4[w4z - 4]
+                            wittwer4[w4z - 4] = wittwer4[w4z]
+                            wittwer4[w4z] = temp
+                            w4z -= 4
+                    if input2 == 'u' and error == 0:
+                        if w4z == 12 or w4z == 13 or w4z == 14 or w4z == 15: error = 1
+                        else:
+                            temp = wittwer4[w4z + 4]
+                            wittwer4[w4z + 4] = wittwer4[w4z]
+                            wittwer4[w4z] = temp
+                            w4z += 4
+                    l += 1
+                if error == 1: await message.channel.send(invalidmovestr)
+                await message.channel.send(printw4(wittwer4))
+                cnt = 0
+                for n in range(16):
+                    if wittwer4[n] == n: cnt += 1
+                if cnt == 16:
+                    error = 1
+                    w4b = 0
+                    await message.channel.send(winstr+winstr4)
+                return """
+        else: await ctx.send('Not a valid move.')
+
     # functions
     def printw3(self, arrayinput):
         ppwstr = ''
@@ -84,7 +183,7 @@ class Witty(commands.Cog):
                 ppwstr += '\n'
         return ppwstr
 
-    def printw4(self, arrayinput):
+    """ def printw4(self, arrayinput):
         ppwstr = ''
         cnt = 0
         for n in range(16):
@@ -93,7 +192,7 @@ class Witty(commands.Cog):
             if cnt == 4:
                 cnt = 0
                 ppwstr += '\n'
-        return ppwstr
+        return ppwstr """
 
 def setup(client):
     client.add_cog(Witty(client))

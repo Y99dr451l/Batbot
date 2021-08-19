@@ -59,7 +59,7 @@ class Reactions(commands.Cog):
             if "yeet" in ctx.content.lower() and self.en_yeet: await ctx.add_reaction('<:yeet:744153144040095784>')
             if "bruh" in ctx.content.lower() and self.en_bruh: await ctx.add_reaction('<:bruh:786383332035788832>')
             if '@' in ctx.content.lower() and self.en_ping: await ctx.add_reaction('<:pandaping:822443133139812394>')
-            if set(input).issubset({'a'}) and len(input) > 2: await ctx.send('A'*self.rng.integers(1,500))
+            if set(ctx.content.lower()).issubset({'a'}) and len(input) > 2: await ctx.send('A'*self.rng.integers(1,500))
 
 def setup(client):
     client.add_cog(Reactions(client))

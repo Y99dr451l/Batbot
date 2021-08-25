@@ -3,15 +3,14 @@ A simple and relatively useless bot for my section server on Discord using the d
 
 It's essentially a coding project with no real purpose yet, but I'll try to keep adding functions.
 It uses a pretty bare-bones Flask implementation for the websocket which I found in a long lost tutorial.
-The main.py is the earliest attempt at making the bot and is currently being rewritten using some semblance of an understanding of the Discord library in the test folder.
+The main.py is the earliest attempt at making the bot and has finally been rewritten using some semblance of an understanding of the Discord library in the test folder.
 the first version was based off a very basic tutorial, then I started coding the prettier and modular version guided by Lucas' amazing "Discord.py Rewrite" series on YouTube.
 I now use wild googling and sometimes even the library's documentation to add further things.
-I'll end up deleting main.py and moving the other version up once that rework is done, soon™. 
 
-To run the bot, just launch main.py or test.py with Python 3. The necessary packages are discord.py, flask, numpy, sympy and possibly some other ones.
+To run the bot, just launch main.py with Python 3. The necessary packages are discord.py, flask, numpy, sympy and possibly some other ones.
 You will need to save the bot's token from the Discord Developer Portal as an environment variable named TOKEN.
 You will also want to change the owner's ID of the bot to yours in order to have the permission to use all the bot's commands.
-I might export these IDs to a separate file to make configuration for practical.
+I might export these IDs to a separate file to make configuration more practical.
 
 Some other functions I might add in the future are a Minesweeper, some voice-chat actions, statistics for the mini-games and maybe something with Discord's new button components.
 

@@ -9,8 +9,8 @@ from discord.ext.commands import is_owner
 from keep_alive import keep_alive
 
 client = commands.Bot(command_prefix = ['$', '$ '], owner_id = 287306245893914624, intents = Intents.all())
-cog_path = 'test.cogs.'
-other_cog_path = './test/cogs'
+cog_path = 'cogs.'
+other_cog_path = './cogs'
 en_testing = 0
 starttime = time.monotonic()
 

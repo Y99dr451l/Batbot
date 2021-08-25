@@ -23,7 +23,7 @@ async def on_ready():
     print(f'Bot is ready and logged in as {client.user}'.format(client))
 
 # GENERAL
-@client.command(aliases = ['up', 'ut', 'alive'])
+@client.command(aliases = ['up', 'ut'])
 async def uptime(ctx):
     uptime = time.monotonic()-starttime
     utdys = uptime//(3600*24)
@@ -31,10 +31,10 @@ async def uptime(ctx):
     utmin = uptime//60-uthrs*60-utdys*60*24
     utsec = uptime-utmin*60-uthrs*3600-utdys*3600*24
     output = 'The bot has been up for '
-    if utdys: output += f'{utdys} days, '
-    if uthrs: output += f'{uthrs} hours, '
-    if utmin: output += f'{utmin} minutes, '
-    await ctx.send(output + f'{utsec} seconds.')
+    if utdys: output += f'{int(utdys)} days, '
+    if uthrs: output += f'{int(uthrs)} hours, '
+    if utmin: output += f'{int(utmin)} minutes, '
+    await ctx.send(output + f'{round(utsec,4)} seconds.')
 
 @client.event
 async def on_member_remove(member):

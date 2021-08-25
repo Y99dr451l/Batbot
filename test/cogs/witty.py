@@ -33,6 +33,7 @@ class Witty(commands.Cog):
         '<:4_:859536749835452416>', '<:3_:859536749796786215>', '<:2_:859536749838991420>', '<:0_:859762589503586304>',
         '<:1_:859536749830471740>'
     ]
+    mixedstr = 'Wittwer has been mixed.'
     remixedstr = 'Wittwer was already mixed, remixing now.'
     unmixedstr = 'Wittwer isn\'t mixed yet.'
     invalidmovestr = 'This is not a valid move.'
@@ -40,7 +41,7 @@ class Witty(commands.Cog):
 
     @commands.command()
     async def wmix3(self, ctx):
-        if self.w3b == 1 or self.w4b == 1:await ctx.send(self.remixedstr)
+        if self.w3b == 1 or self.w4b == 1: await ctx.send(self.remixedstr)
         self.w3b = 1
         self.w4b = 0
         self.wittwer3 = numpy.arange(9)
@@ -54,7 +55,9 @@ class Witty(commands.Cog):
                 self.w3z = n
                 break
         await ctx.send(self.printw3(self.wittwer3))
-        await ctx.send(self.mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.')
+        reshflstr = self.mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.'
+        if reshfl == 1: reshflstr = reshflstr[:-2] + '.'
+        await ctx.send(reshflstr)
 
     @commands.command()
     async def wmix4(self, ctx):
@@ -72,7 +75,9 @@ class Witty(commands.Cog):
                 w4z = n
                 break
         await ctx.send(self.printw4(self.wittwer4))
-        await ctx.send(self.mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.')
+        reshflstr = self.mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.'
+        if reshfl == 1: reshflstr = reshflstr[:-2] + '.'
+        await ctx.send(reshflstr)
 
     @commands.command(aliases = ['m'])
     async def move(self, ctx, moves):
@@ -169,7 +174,7 @@ class Witty(commands.Cog):
                     w4b = 0
                     await message.channel.send(winstr+winstr4)
                 return """
-        else: await ctx.send('Not a valid move.')
+        else: await ctx.send(self.invalidmovestr)
 
     # functions
     def printw3(self, arrayinput):

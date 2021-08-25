@@ -47,13 +47,17 @@ async def latency(ctx):
 @client.command()
 @is_owner()
 async def mode(ctx):
-    await switch_status()
+    await switch_status(ctx)
 
-async def switch_status():
+async def switch_status(ctx):
     global en_testing
     en_testing = not en_testing
-    if en_testing: await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
-    else: await client.change_presence(activity=discord.Game('yeet'), status=discord.Status.online)
+    if en_testing:
+        await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
+        await ctx.send('Changed status to **idle (testing)**.')
+    else:
+        await client.change_presence(activity=discord.Game('yeet'), status=discord.Status.online)
+        await ctx.send('Changed status to **online**')
 
 # COGS
 @client.command()

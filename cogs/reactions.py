@@ -22,16 +22,19 @@ class Reactions(commands.Cog):
     rng = numpy.random.default_rng()
 
     # admin commands
-    @commands.command(aliases = ['rc'])
+    @commands.command(name = 'rc')
     @is_owner()
-    async def reactions(self, ctx, argstr):
+    async def reactoggles(self, ctx, argstr):
         argstr = argstr.lower()
         if argstr == 'lmao': self.en_lmao = not self.en_lmao
         elif argstr == 'yeet': self.en_yeet = not self.en_yeet
         elif argstr == 'bruh': self.en_bruh = not self.en_bruh
         elif argstr == 'ping': self.en_ping = not self.en_ping
         elif argstr == 'aaa': self.en_aaa = not self.en_aaa
-        elif set(argstr).issubset('.'): await ctx.send(f'lmao: {self.en_lmao}\nyeet: {self.en_yeet}\nbruh: {self.en_bruh}\nping: {self.en_ping}\naaa: {self.en_aaa}')
+
+    @commands.command(aliases = ['reacs'])
+    async def reactions(self, ctx):
+        await ctx.send(f'lmao: {self.en_lmao}\nyeet: {self.en_yeet}\nbruh: {self.en_bruh}\nping: {self.en_ping}\naaa: {self.en_aaa}')
 
     # events
     @commands.Cog.listener()

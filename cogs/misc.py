@@ -9,14 +9,17 @@ class Misc(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.starttime = time.monotonic()
     
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'Cog {self} loaded.')
+        self.starttime = time.monotonic()
 
     @commands.command(aliases = ['up', 'ut'])
     async def uptime(self, ctx):
+        if not self.starttime:
+            self.starttime = time.monotonic()
+            await ctx.send('starttime has been set now.')
         uptime = time.monotonic()-self.starttime
         utdys = uptime//(3600*24)
         uthrs = uptime//3600-utdys*24
@@ -50,10 +53,9 @@ class Misc(commands.Cog):
     @commands.command(aliases = ['zq', 'quote'])
     async def zenquote(self, ctx):
         response = requests.get("https://zenquotes.io/api/random")
-        json_data = json.loads(await response.text())
-        print(response.text)
-        await ctx.send(json_data[0]["q"])
-        #+'\n- '+json_data[0]["a"])
+        json_data = json.loads(response.text())
+        print(response.text())
+        await ctx.send(json_data[0]["q"]+'\n- '+json_data[0]["a"])
 
 def setup(client):
     client.add_cog(Misc(client))

@@ -53,8 +53,7 @@ class Misc(commands.Cog):
     @commands.command(aliases = ['zq', 'quote'])
     async def zenquote(self, ctx):
         response = requests.get("https://zenquotes.io/api/random")
-        json_data = json.loads(response.text())
-        print(response.text())
+        json_data = json.loads(response.text)
         await ctx.send(json_data[0]["q"]+'\n- '+json_data[0]["a"])
 
 def setup(client):

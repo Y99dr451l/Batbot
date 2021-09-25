@@ -24,7 +24,7 @@ class Math(commands.Cog):
                 factors.append(i)
         if n > 1: factors.append(n)
         if verification in factors: await ctx.send(f'{verification} is a prime number!')
-        else: await ctx.send(f'The prime factors of {verification} are {factors}') 
+        else: await ctx.send(f'The prime factors of {verification} are '+f'{factors}'[1:-1])
 
 def setup(client):
     client.add_cog(Math(client))

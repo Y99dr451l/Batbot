@@ -35,20 +35,9 @@ class Misc(commands.Cog):
     async def on_member_remove(self, member):
         print(f'{member} has left a server.')
 
-    @commands.command(aliases = ['lat'])
+    @commands.command(aliases = ['lat', 'ping'])
     async def latency(self, ctx):
         await ctx.send(f'{round(self.client.latency*1000,4)}ms')
-
-    @commands.command()
-    @is_owner()
-    async def mode(self, ctx):
-        self.en_testing = not self.en_testing
-        if self.en_testing:
-            await self.client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
-            await ctx.send('Changed status to **idle (testing)**.')
-        else:
-            await self.client.change_presence(activity=discord.Game('yeet'), status=discord.Status.online)
-            await ctx.send('Changed status to **online**.')
 
     @commands.command(aliases = ['zq', 'quote'])
     async def zenquote(self, ctx):

@@ -45,7 +45,7 @@ async def loadall(ctx):
 # ERRORS
 @client.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound): await ctx.send('Invalid command.')
+    if isinstance(error, commands.CommandNotFound) and not ctx.message.content.endswith('$'): await ctx.send('Invalid command.')
     elif isinstance(error, MissingRequiredArgument): await ctx.send('Invalid or missing argument.')
     elif isinstance(error, MissingPermissions): await ctx.send('Missing permissions.')
 

@@ -42,7 +42,7 @@ class Misc(commands.Cog):
     @commands.command(aliases = ['q'])
     async def quote(self, ctx, apiname):
         if apiname == '.': await ctx.send('zen, kanye')
-        elif apiname == 'zen' or 'zenquote':
+        elif apiname == 'zen':
             response = requests.get("https://zenquotes.io/api/random")
             json_data = json.loads(response.text)
             await ctx.send(json_data[0]["q"]+'\n- '+json_data[0]["a"])

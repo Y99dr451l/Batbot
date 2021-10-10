@@ -38,12 +38,18 @@ class Misc(commands.Cog):
     @commands.command(aliases = ['lat', 'ping'])
     async def latency(self, ctx):
         await ctx.send(f'{round(self.client.latency*1000,4)}ms')
-
-    @commands.command(aliases = ['zq', 'quote'])
-    async def zenquote(self, ctx):
-        response = requests.get("https://zenquotes.io/api/random")
-        json_data = json.loads(response.text)
-        await ctx.send(json_data[0]["q"]+'\n- '+json_data[0]["a"])
+    
+    @commands.command(aliases = ['q'])
+    async def quote(self, ctx, apiname):
+        if apiname == '.': await ctx.send('zen, kanye')
+        elif apiname == 'zen' or 'zenquote':
+            response = requests.get("https://zenquotes.io/api/random")
+            json_data = json.loads(response.text)
+            await ctx.send(json_data[0]["q"]+'\n- '+json_data[0]["a"])
+        elif apiname == 'kanye':
+            response = requests.get("https://api.kanye.rest")
+            json_data = json.loads(response.text)
+            await ctx.send(json_data["quote"]+'\n- Kanye West')
 
 def setup(client):
     client.add_cog(Misc(client))

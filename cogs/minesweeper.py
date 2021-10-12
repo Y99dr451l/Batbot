@@ -36,6 +36,12 @@ class Minesweeper(commands.Cog):
             await ctx.send('Too many mines.')
             return
         self.field = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
+        for i in range(0, self.dimx+2):
+            self.field[0][i] = -1
+            self.field[self.dimy+2][i] = -1
+        for j in range(0, self.dimy+2):
+            self.field[j][0] = -1
+            self.field[j][self.dimx+2] = -1
         self.visible = [[False for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
         i = 0
         while i < self.mines:
@@ -102,7 +108,7 @@ class Minesweeper(commands.Cog):
         if not self.field[movey][movex]:
             for i in range(-1,2):
                 for j in range(-1,2):
-                    self.reveal[movey+j][movex+i]
+                    if not self.field[movey][movex] == -1: self.reveal[movey+j][movex+i]
 
 
 def setup(client):

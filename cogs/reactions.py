@@ -24,7 +24,7 @@ class Reactions(commands.Cog):
     # admin commands
     @commands.command(name = 'rc')
     @is_owner()
-    async def reactions(self, ctx, argstr):
+    async def reactions(self, ctx, argstr='.'):
         argstr = argstr.lower()
         if argstr == 'lmao': self.en_lmao = not self.en_lmao
         elif argstr == 'yeet': self.en_yeet = not self.en_yeet

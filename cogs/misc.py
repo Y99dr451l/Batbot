@@ -40,8 +40,8 @@ class Misc(commands.Cog):
         await ctx.send(f'{round(self.client.latency*1000,4)}ms')
     
     @commands.command(aliases = ['q'])
-    async def quote(self, ctx, apiname):
-        if apiname == '.': await ctx.send('zen, kanye')
+    async def quote(self, ctx, apiname = None):
+        if apiname == None: await ctx.send('The possible arguments currently are `zen` and `kanye`.')
         elif apiname == 'zen':
             response = requests.get("https://zenquotes.io/api/random")
             json_data = json.loads(response.text)

@@ -36,7 +36,7 @@ class Minesweeper(commands.Cog):
             await ctx.send('Too many mines.')
             return
         self.field = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
-        self.visible = [[True for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
+        self.visible = [[False for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
         i = 0
         while i < self.mines:
             rx = self.rng.integers(1, self.dimx)

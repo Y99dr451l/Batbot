@@ -92,10 +92,17 @@ class Minesweeper(commands.Cog):
             await ctx.send('Cell already uncovered.')
             return
         if self.field[movey][movex] == 9:
-            await ctx.send('GAME OVER')
+            await ctx.send('GAME OVER - You died.')
             self.visible = [[True for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
-        else: self.visible[movey][movex] = True
+        else: self.reveal(movey, movex)
         self.msdisplay()
+
+    def reveal(self, movey, movex):
+        self.visible[movey][movex] = True
+        if self.field[movey][movex] == 0:
+            for i in range(-1,2):
+                for j in range(-1,2):
+                    self.reveal[movey+j][movex+i]
 
 
 def setup(client):

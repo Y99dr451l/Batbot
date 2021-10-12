@@ -94,10 +94,8 @@ class Minesweeper(commands.Cog):
         if self.field[movey][movex] == 9:
             await ctx.send('GAME OVER - You died.')
             self.visible = [[True for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
-            self.msdisplay(ctx)
-        else:
-            self.reveal(movey, movex)
-            self.msdisplay(ctx)
+        else: self.reveal(movey, movex)
+        await self.msdisplay(ctx)
 
     def reveal(self, movey, movex):
         self.visible[movey][movex] = True

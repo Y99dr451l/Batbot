@@ -56,7 +56,7 @@ class Minesweeper(commands.Cog):
                     #print(mcount)
         await self.msdisplay(ctx)
 
-    @commands.command(aliases = ['msdisp'])
+    @commands.command(aliases = ['msd'])
     async def msdisplay(self, ctx):
         outputstr = ''
         for j in range(1, self.dimy+1):
@@ -81,11 +81,11 @@ class Minesweeper(commands.Cog):
         #print(outputstr)
         await ctx.send(outputstr)
 
-    @commands.command(aliases = [])
+    @commands.command(aliases = ['msm'])
     async def msmove(self, ctx, strmovex, strmovey):
         movex = int(strmovex)
         movey = int(strmovey)
-        if (movex or movey) < 0 or movex > self.dimx or movey > self.dimy:
+        if (movex or movey) < 1 or movex > self.dimx or movey > self.dimy:
             await ctx.send('Coordinates out of bounds.')
             return
         if self.visible[movey][movex]:
@@ -95,7 +95,7 @@ class Minesweeper(commands.Cog):
             await ctx.send('GAME OVER - You died.')
             self.visible = [[True for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
         else: self.reveal(movey, movex)
-        self.msdisplay()
+        self.msdisplay(ctx)
 
     def reveal(self, movey, movex):
         self.visible[movey][movex] = True

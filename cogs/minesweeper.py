@@ -16,16 +16,16 @@ class Minesweeper(commands.Cog):
     dimx = 0
     dimy = 0
     mines = 0
+    running = False
     rng = numpy.random.default_rng()
-    emojis = [':zero:', ':one:', ':two:',
-    ':three:', ':four:', ':five:', ':six:',
-    ':seven:', ':eight:', ':bomb:', ':fog:']
+    emojis = [':zero:', ':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':bomb:', ':fog:', ':flag_black:']
 
     @commands.command(aliases = ['ms'])
     async def minesweeper(self, ctx, dimx=None, dimy=None, mines=None):
         if (dimx or dimy or mines) == None:
-            await ctx.send('Wrong number of arguments; the necessary arguments are `dimx`, `dimy`and `mines`, in that order.')
+            await ctx.send('The necessary arguments are `dimx`, `dimy`and `mines`, in that order.')
             return
+        self.running = False
         self.dimx = int(dimx)
         self.dimy = int(dimy)
         self.mines = int(mines)
@@ -39,7 +39,7 @@ class Minesweeper(commands.Cog):
             await ctx.send('Too many mines.')
             return
         self.field = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
-        self.visible = [[False for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
+        self.visible = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
         i = 0
         while i < self.mines:
             rx = self.rng.integers(1, self.dimx)
@@ -55,6 +55,7 @@ class Minesweeper(commands.Cog):
                         for l in range (-1, 2):
                             if self.field[j+k][i+l] == 9: mcount += 1
                     self.field[j][i] = mcount
+        self.running = True
         await self.msdisplay(ctx)
 
     @commands.command(aliases = ['msd'])
@@ -62,7 +63,8 @@ class Minesweeper(commands.Cog):
         outputstr = ''
         for j in range(1, self.dimy+1):
             for i in range(1, self.dimx+1):
-                if self.visible[j][i]: outputstr += self.emojis[self.field[j][i]]
+                if self.visible[j][i] == 1: outputstr += self.emojis[self.field[j][i]]
+                elif self.visible[j][i] == 2: outputstr += self.emojis[11]
                 else: outputstr += self.emojis[10]
             outputstr += '\n'
         if len(outputstr) > 2000:
@@ -80,31 +82,55 @@ class Minesweeper(commands.Cog):
         await ctx.send(outputstr)
 
     @commands.command(aliases = ['msm'])
-    async def msmove(self, ctx, strmovex, strmovey):
+    async def msmove(self, ctx, strmovex=None, strmovey=None):
+        if strmovex == None:
+            await ctx.send('The necessary arguments are `x` and `y`.\nThe x-axis goes from left to right and the y-axis from top to bottom, both starting at 1.')
+            return
+        if not self.running:
+            await ctx.send('No game is running. Start one with the `ms`-command.')
+            return
         movex = int(strmovex)
         movey = int(strmovey)
         if (movex or movey) < 1 or movex > self.dimx or movey > self.dimy:
             await ctx.send('Coordinates out of bounds.')
             return
-        if self.visible[movey][movex]:
-            await ctx.send('Cell already uncovered.')
-            return
+        if self.visible[movey][movex] == 1:
+            #await ctx.send('Cell already uncovered.')
+            fcount = 0
+            for i in range(movex-1, movex+2):
+                for j in range(movey-1, movey+2):
+                    if self.field[j][i] == 2: fcount += 1
+            if fcount == self.field[movey][movex]:
+                for i in range(movex-1, movex+2):
+                    for j in range(movey-1, movey+2):
+                        if not self.visible[j][i] == 2: self.visible[j][i] = 1
         if self.field[movey][movex] == 9:
             await ctx.send('GAME OVER - You died.')
-            self.visible = [[True for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
+            self.visible = [[1 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
+            self.running = False
         else: self.reveal(movey, movex)
         await self.msdisplay(ctx)
 
     def reveal(self, movey, movex):
-        self.visible[movey][movex] = True
+        self.visible[movey][movex] = 1
         if not self.field[movey][movex]:
-            for i in range(-1,2):
-                for j in range(-1,2):
-                    if (movex+i in range(1, self.dimx+1)) and (movey+j in range(1, self.dimy+1)) and (not self.visible[movey+j][movex+i]): self.reveal(movey+j, movex+i)
+            for i in range(movex-1, movex+2):
+                for j in range(movey-1, movey+2):
+                    if (i in range(1, self.dimx+1)) and (j in range(1, self.dimy+1)) and (not self.visible[j][i]): self.reveal(j, i)
 
     @commands.command(aliases = ['msf'])
     async def msflag(self, ctx, strflagx, strflagy):
-        a = 1
+        flagx = int(strflagx)
+        flagy = int(strflagy)
+        if (flagx or flagy) < 1 or flagx > self.dimx or flagy > self.dimy:
+            await ctx.send('Coordinates out of bounds.')
+            return
+        if self.visible[flagy][flagx] == 1:
+            await ctx.send("Can't flag uncovered cell.")
+            return
+        if self.visible[flagy][flagx] == 2: self.visible[flagy][flagx] = 0
+        else: self.visible[flagy][flagx] = 2
+        await self.msdisplay(ctx)
 
 def setup(client):
     client.add_cog(Minesweeper(client))

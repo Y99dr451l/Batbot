@@ -99,7 +99,7 @@ class Minesweeper(commands.Cog):
             fcount = 0
             for i in range(movex-1, movex+2):
                 for j in range(movey-1, movey+2):
-                    if self.field[j][i] == 2: fcount += 1
+                    if self.visible[j][i] == 2: fcount += 1
             if fcount == self.field[movey][movex]:
                 for i in range(movex-1, movex+2):
                     for j in range(movey-1, movey+2):
@@ -108,7 +108,7 @@ class Minesweeper(commands.Cog):
             await ctx.send('GAME OVER - You died.')
             for i in range(0, self.dimx+2):
                 for j in range(0, self.dimy+2):
-                    self.visible = 1 if not self.visible[i][j] == 2 else 2
+                    if not self.visible[j][i] == 2: self.visible = 1
             self.running = False
         else: self.reveal(movey, movex)
         await self.msdisplay(ctx)
@@ -131,7 +131,7 @@ class Minesweeper(commands.Cog):
             ccount = 0
             for i in range(movex-1, movex+2):
                 for j in range(movey-1, movey+2):
-                    if not self.field[j][i]: ccount += 1
+                    if not self.visible[j][i]: ccount += 1
             if ccount == self.field[movey][movex]:
                 for i in range(movex-1, movex+2):
                     for j in range(movey-1, movey+2):

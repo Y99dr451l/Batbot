@@ -39,12 +39,12 @@ class Minesweeper(commands.Cog):
             await ctx.send('Too many mines.')
             return
         self.field = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
-        for i in range(0, self.dimx+2):
+        """ for i in range(0, self.dimx+2):
             self.field[0][i] = -1
             self.field[self.dimy+1][i] = -1
         for j in range(0, self.dimy+2):
             self.field[j][0] = -1
-            self.field[j][self.dimx+1] = -1
+            self.field[j][self.dimx+1] = -1 """
         self.visible = [[False for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
         i = 0
         while i < self.mines:
@@ -113,7 +113,7 @@ class Minesweeper(commands.Cog):
             print('Trying to uncover surroundings.')
             for i in range(-1,2):
                 for j in range(-1,2):
-                    if not self.field[movey][movex] == -1:
+                    if (movex+i in range(1, self.dimx+1)) and (movey+j in range(1, self.dimy+1)) and (not self.visible[movey+j][movex+i]):
                         print(f'Trying to uncover {movex+i}, {movey+j}.')
                         self.reveal(movey+j, movex+i)
 

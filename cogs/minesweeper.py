@@ -71,10 +71,11 @@ class Minesweeper(commands.Cog):
             outputstr = 'Not using emojis because of the character limit.\n```'
             for j in range(1, self.dimy+1):
                 for i in range(1, self.dimx+1):
-                    if self.visible[j][i]:
+                    if self.visible[j][i] == 1:
                         if self.field[j][i] == 9: outputstr += '*'
                         elif self.field[j][i] == 0: outputstr += ' '
                         else: outputstr += self.field[j][i]
+                    elif self.visible[j][i] == 2: outputstr += 'F'
                     else: outputstr += 'X'
                 outputstr += '\n'
             outputstr += '```'
@@ -95,7 +96,6 @@ class Minesweeper(commands.Cog):
             await ctx.send('Coordinates out of bounds.')
             return
         if self.visible[movey][movex] == 1:
-            #await ctx.send('Cell already uncovered.')
             fcount = 0
             for i in range(movex-1, movex+2):
                 for j in range(movey-1, movey+2):
@@ -103,33 +103,41 @@ class Minesweeper(commands.Cog):
             if fcount == self.field[movey][movex]:
                 for i in range(movex-1, movex+2):
                     for j in range(movey-1, movey+2):
-                        if not self.visible[j][i] == 2: self.reveal(j, i)
+                        if not self.visible[j][i] == 2: self.reveal(j, i, True)
         if self.field[movey][movex] == 9:
             await ctx.send('GAME OVER - You died.')
-            self.visible = [[1 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
+            for i in range(0, self.dimx+2):
+                for j in range(0, self.dimy+2):
+                    self.visible = 1 if not self.visible[i][j] == 2 else 2
             self.running = False
         else: self.reveal(movey, movex)
         await self.msdisplay(ctx)
 
-    def reveal(self, movey, movex):
+    def reveal(self, movey, movex, override=False):
         self.visible[movey][movex] = 1
-        if not self.field[movey][movex]:
+        if not self.field[movey][movex] or override:
             for i in range(movex-1, movex+2):
                 for j in range(movey-1, movey+2):
-                    if (i in range(1, self.dimx+1)) and (j in range(1, self.dimy+1)) and (not self.visible[j][i]): self.reveal(j, i)
+                    if i in range(1, self.dimx+1) and j in range(1, self.dimy+1) and not self.visible[j][i]: self.reveal(j, i)
 
     @commands.command(aliases = ['msf'])
-    async def msflag(self, ctx, strflagx, strflagy):
-        flagx = int(strflagx)
-        flagy = int(strflagy)
-        if (flagx or flagy) < 1 or flagx > self.dimx or flagy > self.dimy:
+    async def msflag(self, ctx, strmovex, strmovey):
+        movex = int(strmovex)
+        movey = int(strmovey)
+        if (movex or movey) < 1 or movex > self.dimx or movey > self.dimy:
             await ctx.send('Coordinates out of bounds.')
             return
-        if self.visible[flagy][flagx] == 1:
-            await ctx.send("Can't flag uncovered cell.")
-            return
-        if self.visible[flagy][flagx] == 2: self.visible[flagy][flagx] = 0
-        else: self.visible[flagy][flagx] = 2
+        if self.visible[movey][movex] == 1:
+            ccount = 0
+            for i in range(movex-1, movex+2):
+                for j in range(movey-1, movey+2):
+                    if self.field[j][i] == 2: ccount += 1
+            if ccount == self.field[movey][movex]:
+                for i in range(movex-1, movex+2):
+                    for j in range(movey-1, movey+2):
+                        if not self.visible[j][i]: self.visible[i][j] = 2
+        if self.visible[movey][movex] == 2: self.visible[movey][movex] = 0
+        else: self.visible[movey][movex] = 2
         await self.msdisplay(ctx)
 
 def setup(client):

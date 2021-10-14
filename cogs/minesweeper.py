@@ -136,8 +136,7 @@ class Minesweeper(commands.Cog):
                 for i in range(movex-1, movex+2):
                     for j in range(movey-1, movey+2):
                         if not self.visible[j][i]: self.visible[j][i] = 2
-        elif self.visible[movey][movex] == 2: self.visible[movey][movex] = 0
-        else: self.visible[movey][movex] = 2
+        else: self.visible[movey][movex] = 0 if self.visible[movey][movex] == 2 else 2
         await self.msdisplay(ctx)
 
 def setup(client):

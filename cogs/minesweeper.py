@@ -115,7 +115,7 @@ class Minesweeper(commands.Cog):
                 for j in range(-1,2):
                     if not self.field[movey][movex] == -1:
                         print(f'Trying to uncover {movex+i}, {movey+j}.')
-                        self.reveal[movey+j][movex+i]
+                        self.reveal(movey+j, movex+i)
 
 
 def setup(client):

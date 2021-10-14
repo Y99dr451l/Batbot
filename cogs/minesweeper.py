@@ -39,12 +39,6 @@ class Minesweeper(commands.Cog):
             await ctx.send('Too many mines.')
             return
         self.field = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
-        """ for i in range(0, self.dimx+2):
-            self.field[0][i] = -1
-            self.field[self.dimy+1][i] = -1
-        for j in range(0, self.dimy+2):
-            self.field[j][0] = -1
-            self.field[j][self.dimx+1] = -1 """
         self.visible = [[False for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
         i = 0
         while i < self.mines:
@@ -53,7 +47,6 @@ class Minesweeper(commands.Cog):
             if not self.field[ry][rx] == 9:
                 self.field[ry][rx] = 9
                 i += 1
-        #print('mines placed')
         for j in range (1, self.dimy+1):
             for i in range (1, self.dimx+1):
                 if not self.field[j][i] == 9:
@@ -62,7 +55,6 @@ class Minesweeper(commands.Cog):
                         for l in range (-1, 2):
                             if self.field[j+k][i+l] == 9: mcount += 1
                     self.field[j][i] = mcount
-                    #print(mcount)
         await self.msdisplay(ctx)
 
     @commands.command(aliases = ['msd'])
@@ -73,7 +65,6 @@ class Minesweeper(commands.Cog):
                 if self.visible[j][i]: outputstr += self.emojis[self.field[j][i]]
                 else: outputstr += self.emojis[10]
             outputstr += '\n'
-        #print(outputstr)
         if len(outputstr) > 2000:
             outputstr = 'Not using emojis because of the character limit.\n```'
             for j in range(1, self.dimy+1):
@@ -85,9 +76,7 @@ class Minesweeper(commands.Cog):
                     else: outputstr += 'X'
                 outputstr += '\n'
             outputstr += '```'
-            #print(outputstr)
         if len(outputstr) > 2000: outputstr = 'The grid is too big to be sent in one message.. adding splitting function <:soontm:859533054455971860>.'
-        #print(outputstr)
         await ctx.send(outputstr)
 
     @commands.command(aliases = ['msm'])
@@ -108,15 +97,14 @@ class Minesweeper(commands.Cog):
 
     def reveal(self, movey, movex):
         self.visible[movey][movex] = True
-        print(f'Uncovered {movex}, {movey}.')
         if not self.field[movey][movex]:
-            print('Trying to uncover surroundings.')
             for i in range(-1,2):
                 for j in range(-1,2):
-                    if (movex+i in range(1, self.dimx+1)) and (movey+j in range(1, self.dimy+1)) and (not self.visible[movey+j][movex+i]):
-                        print(f'Trying to uncover {movex+i}, {movey+j}.')
-                        self.reveal(movey+j, movex+i)
+                    if (movex+i in range(1, self.dimx+1)) and (movey+j in range(1, self.dimy+1)) and (not self.visible[movey+j][movex+i]): self.reveal(movey+j, movex+i)
 
+    @commands.command(aliases = ['msf'])
+    async def msflag(self, ctx, strflagx, strflagy):
+        a = 1
 
 def setup(client):
     client.add_cog(Minesweeper(client))

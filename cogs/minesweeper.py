@@ -131,7 +131,7 @@ class Minesweeper(commands.Cog):
             ccount = 0
             for i in range(movex-1, movex+2):
                 for j in range(movey-1, movey+2):
-                    if self.field[j][i] == 2: ccount += 1
+                    if not self.field[j][i]: ccount += 1
             if ccount == self.field[movey][movex]:
                 for i in range(movex-1, movex+2):
                     for j in range(movey-1, movey+2):

@@ -110,9 +110,12 @@ class Minesweeper(commands.Cog):
         self.visible[movey][movex] = True
         print(f'Uncovered {movex}, {movey}.')
         if not self.field[movey][movex]:
+            print('Trying to uncover surroundings.')
             for i in range(-1,2):
                 for j in range(-1,2):
-                    if not self.field[movey][movex] == -1: self.reveal[movey+j][movex+i]
+                    if not self.field[movey][movex] == -1:
+                        print(f'Trying to uncover {movex+i}, {movey+j}.')
+                        self.reveal[movey+j][movex+i]
 
 
 def setup(client):

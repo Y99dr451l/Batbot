@@ -108,6 +108,7 @@ class Minesweeper(commands.Cog):
 
     def reveal(self, movey, movex):
         self.visible[movey][movex] = True
+        print(f'Uncovered {movex}, {movey}.')
         if not self.field[movey][movex]:
             for i in range(-1,2):
                 for j in range(-1,2):

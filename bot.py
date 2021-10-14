@@ -48,11 +48,12 @@ async def loadall(ctx):
         if filename.endswith('.py'): client.load_extension(cog_path+f'{filename[:-3]}')
 
 @client.command(aliases = ['up', 'ut'])
-async def uptime(self, ctx):
-    if not self.starttime:
-        self.starttime = time.monotonic()
+async def uptime(ctx):
+    global starttime
+    if not starttime:
+        starttime = time.monotonic()
         await ctx.send('starttime has been set now.')
-    uptime = time.monotonic()-self.starttime
+    uptime = time.monotonic()-starttime
     utdys = uptime//(3600*24)
     uthrs = uptime//3600-utdys*24
     utmin = uptime//60-uthrs*60-utdys*60*24

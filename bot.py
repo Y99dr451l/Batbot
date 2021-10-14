@@ -1,6 +1,7 @@
 # from discord.ext.commands.help import MinimalHelpCommand
 import os
 import discord
+import time
 from discord import Intents
 from discord.ext import commands
 from discord.ext.commands import is_owner
@@ -11,6 +12,7 @@ client = commands.Bot(command_prefix = ['$', '$ '], owner_id = 28730624589391462
 cog_path = 'cogs.'
 other_cog_path = './cogs'
 en_testing = True
+starttime = 0
 
 @client.event
 async def on_ready():
@@ -19,6 +21,8 @@ async def on_ready():
         print(f'On {guild} (id {guild.id})')
     await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
     print(f'Bot is ready and logged in as {client.user}'.format(client))
+    global starttime
+    starttime = time.monotonic()
 
 # COGS
 @client.command()
@@ -42,6 +46,22 @@ async def reload(ctx, extension):
 async def loadall(ctx):
     for filename in os.listdir(other_cog_path):
         if filename.endswith('.py'): client.load_extension(cog_path+f'{filename[:-3]}')
+
+@client.command(aliases = ['up', 'ut'])
+async def uptime(self, ctx):
+    if not self.starttime:
+        self.starttime = time.monotonic()
+        await ctx.send('starttime has been set now.')
+    uptime = time.monotonic()-self.starttime
+    utdys = uptime//(3600*24)
+    uthrs = uptime//3600-utdys*24
+    utmin = uptime//60-uthrs*60-utdys*60*24
+    utsec = uptime-utmin*60-uthrs*3600-utdys*3600*24
+    output = 'The bot has been up for '
+    if utdys: output += f'{int(utdys)} days, '
+    if uthrs: output += f'{int(uthrs)} hours, '
+    if utmin: output += f'{int(utmin)} minutes, '
+    await ctx.send(output + f'{round(utsec,4)} seconds.')
 
 # ERRORS
 @client.event

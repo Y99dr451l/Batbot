@@ -1,9 +1,8 @@
 import discord
 from discord.ext import commands
-from discord.ext.commands import is_owner
+#from discord.ext.commands import is_owner
 import requests
 import json
-import time
 
 class Misc(commands.Cog):
 
@@ -13,23 +12,6 @@ class Misc(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'Cog {self} loaded.')
-        self.starttime = time.monotonic()
-
-    @commands.command(aliases = ['up', 'ut'])
-    async def uptime(self, ctx):
-        if not self.starttime:
-            self.starttime = time.monotonic()
-            await ctx.send('starttime has been set now.')
-        uptime = time.monotonic()-self.starttime
-        utdys = uptime//(3600*24)
-        uthrs = uptime//3600-utdys*24
-        utmin = uptime//60-uthrs*60-utdys*60*24
-        utsec = uptime-utmin*60-uthrs*3600-utdys*3600*24
-        output = 'The bot has been up for '
-        if utdys: output += f'{int(utdys)} days, '
-        if uthrs: output += f'{int(uthrs)} hours, '
-        if utmin: output += f'{int(utmin)} minutes, '
-        await ctx.send(output + f'{round(utsec,4)} seconds.')
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):

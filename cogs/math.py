@@ -25,6 +25,45 @@ class Math(commands.Cog):
         if n > 1: factors.append(n)
         if verification in factors: await ctx.send(f'{verification} is a prime number!')
         else: await ctx.send(f'The prime factors of {verification} are '+f'{factors}'[1:-1])
+    
+    @commands.command(asliases = ['seq'])
+    async def sequence(self, ctx, seqstr=None, numberstr=None):
+        if seqstr == None:
+            await ctx.send('The possible arguments currently are `fibonacci`and `conway`.')
+            return
+        if numberstr == None:
+            await ctx.send('Give the amount of steps when calling the command.')
+            return
+        steps = int(numberstr)
+        if steps > 1000:
+            await ctx.send('Too many steps.')
+            return
+        if seqstr == 'fibonacci':
+            fibnew = 1
+            fibold = 0
+            outputstr = f'{fibnew}, '
+            for i in range(2, steps+1):
+                temp = fibnew
+                fibnew += fibold
+                fibold = temp
+                outputstr += f'{fibnew}, '
+            outputstr = outputstr[:-2]
+            if len(outputstr) > 2000: outputstr = f'The {steps}th number in the Fibonacci sequence is {fibnew}.'
+            await ctx.send(outputstr)
+        elif seqstr == 'conway':
+            connew = '1'
+            outputstr = f'{connew}, '
+            for i in range(2, steps+1):
+                conold = connew
+                while len(conold) > 0:
+                    j = 1
+                    while conold[j] == conold[0]: j += 1
+                    connew += f'{j}{conold[0]}'
+                    conold = conold[j:]
+                outputstr += f'{connew}, '
+            outputstr = outputstr[:-2]
+            if len(outputstr) > 2000: outputstr = f'The {steps}th number in the Conway sequence is {connew}.'
+            await ctx.send(outputstr)
 
 def setup(client):
     client.add_cog(Math(client))

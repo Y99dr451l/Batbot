@@ -17,6 +17,8 @@ class Minesweeper(commands.Cog):
     dimy = 0
     mines = 0
     running = False
+    revealed = 0
+    toreveal = 0
     rng = numpy.random.default_rng()
     emojis = [':zero:', ':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':bomb:', ':fog:', ':flag_black:']
 
@@ -26,6 +28,7 @@ class Minesweeper(commands.Cog):
             await ctx.send('The necessary arguments are `dimx`, `dimy`and `mines`, in that order.')
             return
         self.running = False
+        self.revealed = 0
         self.dimx = int(dimx)
         self.dimy = int(dimy)
         self.mines = int(mines)
@@ -38,15 +41,24 @@ class Minesweeper(commands.Cog):
         if self.mines > self.dimx * self.dimy:
             await ctx.send('Too many mines.')
             return
-        self.field = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
         self.visible = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
         i = 0
-        while i < self.mines:
-            rx = self.rng.integers(1, self.dimx)
-            ry = self.rng.integers(1, self.dimy)
-            if not self.field[ry][rx] == 9:
-                self.field[ry][rx] = 9
-                i += 1
+        if self.mines <= 0.5*self.dimx*self.dimy:
+            self.field = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
+            while i < self.mines:
+                rx = self.rng.integers(1, self.dimx)
+                ry = self.rng.integers(1, self.dimy)
+                if not self.field[ry][rx] == 9:
+                    self.field[ry][rx] = 9
+                    i += 1
+        else:
+            self.field = [[9 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
+            while i < self.dimx*self.dimy-self.mines:
+                rx = self.rng.integers(1, self.dimx)
+                ry = self.rng.integers(1, self.dimy)
+                if not self.field[ry][rx] == 0:
+                    self.field[ry][rx] = 0
+                    i += 1
         for j in range (1, self.dimy+1):
             for i in range (1, self.dimx+1):
                 if not self.field[j][i] == 9:
@@ -56,6 +68,7 @@ class Minesweeper(commands.Cog):
                             if self.field[j+k][i+l] == 9: mcount += 1
                     self.field[j][i] = mcount
         self.running = True
+        self.toreveal = self.dimx*self.dimy-self.mines
         await self.msdisplay(ctx)
 
     @commands.command(aliases = ['msd'])
@@ -111,11 +124,19 @@ class Minesweeper(commands.Cog):
                     if not self.visible[j][i] == 2: self.visible = 1
             self.running = False
         else: self.reveal(movey, movex)
+        if self.revealed == self.toreveal and self.running:
+            await ctx.send('GAME OVER - You won!')
+            for i in range(0, self.dimx+2):
+                for j in range(0, self.dimy+2):
+                    if not self.visible[j][i] == 2: self.visible = 1
+            self.running = False
         await self.msdisplay(ctx)
 
     def reveal(self, movey, movex, override=False):
         self.visible[movey][movex] = 1
+        self.revealed += 1
         if not self.field[movey][movex] or override:
+            override = False
             for i in range(movex-1, movex+2):
                 for j in range(movey-1, movey+2):
                     if i in range(1, self.dimx+1) and j in range(1, self.dimy+1) and not self.visible[j][i]: self.reveal(j, i)

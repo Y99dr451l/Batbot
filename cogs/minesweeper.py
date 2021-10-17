@@ -116,7 +116,7 @@ class Minesweeper(commands.Cog):
             if fcount == self.field[movey][movex]:
                 for i in range(movex-1, movex+2):
                     for j in range(movey-1, movey+2):
-                        self.reveal(j, i)
+                        if not self.visible[j][i] == 2: self.reveal(j, i)
         if self.field[movey][movex] == 9:
             await ctx.send('GAME OVER - You died. :dizzy_face:')
             self.visible = [[1 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]

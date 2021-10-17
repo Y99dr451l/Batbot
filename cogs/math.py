@@ -61,6 +61,7 @@ class Math(commands.Cog):
                     connew += f'{j}'+conold[0]
                     conold = conold[int(j):]
                 outputstr += connew + ', '
+                i += 1
             outputstr = outputstr[:-2]
             if len(outputstr) > 2000: outputstr = f'The {steps}th number in the Conway sequence is ' + connew + '.'
             await ctx.send(outputstr)

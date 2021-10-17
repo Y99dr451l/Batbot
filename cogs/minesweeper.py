@@ -116,27 +116,22 @@ class Minesweeper(commands.Cog):
             if fcount == self.field[movey][movex]:
                 for i in range(movex-1, movex+2):
                     for j in range(movey-1, movey+2):
-                        if not self.visible[j][i] == 2: self.reveal(j, i, True)
+                        self.reveal(j, i)
         if self.field[movey][movex] == 9:
-            await ctx.send('GAME OVER - You died.')
-            for i in range(0, self.dimx+2):
-                for j in range(0, self.dimy+2):
-                    if not self.visible[j][i] == 2: self.visible = 1
+            await ctx.send('GAME OVER - You died. :dizzy_face:')
+            self.visible = [[1 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
             self.running = False
         else: self.reveal(movey, movex)
         if self.revealed == self.toreveal and self.running:
-            await ctx.send('GAME OVER - You won!')
-            for i in range(0, self.dimx+2):
-                for j in range(0, self.dimy+2):
-                    if not self.visible[j][i] == 2: self.visible = 1
+            await ctx.send('GAME OVER - You won! :sunglasses:')
+            self.visible = [[1 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
             self.running = False
         await self.msdisplay(ctx)
 
-    def reveal(self, movey, movex, override=False):
+    def reveal(self, movey, movex):
         self.visible[movey][movex] = 1
         self.revealed += 1
-        if not self.field[movey][movex] or override:
-            override = False
+        if not self.field[movey][movex]:
             for i in range(movex-1, movex+2):
                 for j in range(movey-1, movey+2):
                     if i in range(1, self.dimx+1) and j in range(1, self.dimy+1) and not self.visible[j][i]: self.reveal(j, i)

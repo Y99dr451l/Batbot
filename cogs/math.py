@@ -59,7 +59,7 @@ class Math(commands.Cog):
                     j = 1
                     while conold[j] == conold[0]: j += 1
                     connew += f'{j}'+conold[0]
-                    conold = conold[j:]
+                    conold = conold[int(j):]
                 outputstr += connew + ', '
             outputstr = outputstr[:-2]
             if len(outputstr) > 2000: outputstr = f'The {steps}th number in the Conway sequence is ' + connew + '.'

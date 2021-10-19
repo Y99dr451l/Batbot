@@ -81,7 +81,7 @@ class Minesweeper(commands.Cog):
                 else: outputstr += self.emojis[10]
             outputstr += '\n'
         if len(outputstr) > 2000:
-            outputstr = 'Not using emojis because of the character limit.\n```'
+            outputstr = ''
             for j in range(1, self.dimy+1):
                 for i in range(1, self.dimx+1):
                     if self.visible[j][i] == 1:
@@ -116,7 +116,7 @@ class Minesweeper(commands.Cog):
             if fcount == self.field[movey][movex]:
                 for i in range(movex-1, movex+2):
                     for j in range(movey-1, movey+2):
-                        if not self.visible[j][i] == 2: self.reveal(j, i)
+                        if not self.visible[j][i]: self.reveal(j, i)
         if self.field[movey][movex] == 9:
             await ctx.send('GAME OVER - You died. :dizzy_face:')
             self.visible = [[1 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]

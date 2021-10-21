@@ -35,10 +35,10 @@ class Math(commands.Cog):
             await ctx.send('Give the amount of steps when calling the command.')
             return
         steps = int(numberstr)
-        if steps > 1000:
-            await ctx.send('Too many steps.')
-            return
         if seqstr == 'fibonacci' or seqstr == 'fib' or seqstr == 'f':
+            if steps > 2000:
+                await ctx.send('Too many steps.')
+                return
             fibnew = 1
             fibold = 0
             outputstr = f'{fibnew}, '
@@ -51,13 +51,17 @@ class Math(commands.Cog):
             if steps > 128: outputstr = f'The {steps}th number in the Fibonacci sequence is {fibnew}.'
             await ctx.send(outputstr)
         elif seqstr == 'conway' or seqstr == 'con' or seqstr == 'c':
+            if steps > 200:
+                await ctx.send('Too many steps.')
+                return
             connew = '1'
             outputstr = connew + ', '
             for i in range(2, steps+1):
                 conold = connew
+                connew = ''
                 while len(conold) > 0:
                     j = 1
-                    while conold[j] == conold[0]: j += 1
+                    while j < len(conold) and conold[j] == conold[0]: j += 1
                     connew += f'{j}'+conold[0]
                     conold = conold[int(j):]
                 outputstr += connew + ', '

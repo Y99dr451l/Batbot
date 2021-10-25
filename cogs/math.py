@@ -20,9 +20,13 @@ class Math(commands.Cog):
         while i * i <= n:
             if n % i: i += 1
             else:
-                n //= i
-                factors.append(i)
-        if n > 1: factors.append(n)
+                if n < 0:
+                    n//= -i
+                    factors.append(-i)
+                else:
+                    n //= i
+                    factors.append(i)
+        if n > 1 or verification == 1: factors.append(n)
         if verification in factors: await ctx.send(f'{verification} is a prime number!')
         else: await ctx.send(f'The prime factors of {verification} are '+f'{factors}'[1:-1])
     

@@ -14,21 +14,20 @@ class Math(commands.Cog):
     @commands.command(aliases = ['pf'])
     async def prime(self, ctx, number):
         n = int(number)
+        if n <= 1:
+            ctx.send('No.')
+            return
         verification = int(number)
         i = 2
         factors = []
         while i * i <= n:
             if n % i: i += 1
             else:
-                if n < 0:
-                    n//= -i
-                    factors.append(-i)
-                else:
-                    n //= i
-                    factors.append(i)
+                n //= i
+                factors.append(i)
         if n > 1 or verification == 1: factors.append(n)
         if verification in factors: await ctx.send(f'{verification} is a prime number!')
-        else: await ctx.send(f'The prime factors of {verification} are '+f'{factors}'[1:-1])
+        else: await ctx.send(f'The prime factors of {verification} are '+f'{factors}'[1:-1]+'.')
     
     @commands.command(aliases = ['seq'])
     async def sequence(self, ctx, seqstr=None, numberstr=None):

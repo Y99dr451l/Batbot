@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands.errors import MissingRequiredArgument
 import math
 
 class Math(commands.Cog):
@@ -13,11 +14,13 @@ class Math(commands.Cog):
 
     @commands.command(aliases = ['pf'])
     async def prime(self, ctx, number):
-        n = int(number)
+        try: n = int(number)
+        except ValueError:
+            raise MissingRequiredArgument
         if n <= 1:
             await ctx.send('No.')
             return
-        verification = int(number)
+        verification = n
         i = 2
         factors = []
         while i * i <= n:
@@ -37,7 +40,9 @@ class Math(commands.Cog):
         if numberstr == None:
             await ctx.send('Give the amount of steps when calling the command.')
             return
-        steps = int(numberstr)
+        try: steps = int(numberstr)
+        except ValueError:
+            raise MissingRequiredArgument
         if seqstr == 'fibonacci' or seqstr == 'fib' or seqstr == 'f':
             if steps > 2000:
                 await ctx.send('Too many steps.')

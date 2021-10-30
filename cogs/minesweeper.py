@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands.errors import MissingRequiredArgument
 import numpy
 
 class Minesweeper(commands.Cog):
@@ -29,9 +30,12 @@ class Minesweeper(commands.Cog):
             return
         self.running = False
         self.revealed = 0
-        self.dimx = int(dimx)
-        self.dimy = int(dimy)
-        self.mines = int(mines)
+        try:
+            self.dimx = int(dimx)
+            self.dimy = int(dimy)
+            self.mines = int(mines)
+        except ValueError:
+            raise MissingRequiredArgument
         if (self.dimx or self.dimy or self.mines) < 0:
             await ctx.send('Negative terms.')
             return
@@ -103,8 +107,11 @@ class Minesweeper(commands.Cog):
         if not self.running:
             await ctx.send('No game is running. Start one with the `ms`-command.')
             return
-        movex = int(strmovex)
-        movey = int(strmovey)
+        try:
+            movex = int(strmovex)
+            movey = int(strmovey)
+        except ValueError:
+            raise MissingRequiredArgument
         if (movex or movey) < 1 or movex > self.dimx or movey > self.dimy:
             await ctx.send('Coordinates out of bounds.')
             return

@@ -13,13 +13,11 @@ class SlidingPuzzle(commands.Cog):
     async def on_ready(self):
         print(f'Cog {self} loaded.')
 
-    # variables
     rng = numpy.random.default_rng()
     grid = numpy.zeros(9)
-    started = 0
+    started = False
     zeropos = 0
-    wittyb = False
-
+    witty = False
     emojis = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':white_large_square:',
             '<:39:860269430537060382>', '<:38:860269430562095104>', '<:37:860269430490791966>',
             '<:36:860269430580051978>', '<:35:860269430629990412>', '<:34:860269430406381649>',
@@ -33,8 +31,8 @@ class SlidingPuzzle(commands.Cog):
 
     @commands.command(aliases = ['sp'])
     async def slidingpuzzle(self, ctx):
-        if self.started == 1: await ctx.send(self.remixedstr)
-        self.started = 1
+        if self.started: await ctx.send(self.remixedstr)
+        self.started = True
         self.grid = numpy.arange(9)
         self.rng.shuffle(self.grid)
         reshfl = 0
@@ -45,18 +43,17 @@ class SlidingPuzzle(commands.Cog):
             if self.grid[n] == 8:
                 self.zeropos = n
                 break
-        await self.spprint()
+        await self.spdisplay(ctx)
         reshflstr = self.mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.'
         if reshfl == 1: reshflstr = reshflstr[:-2] + '.'
         await ctx.send(reshflstr)
 
     @commands.command(aliases = ['spm'])
     async def spmove(self, ctx, moves):
+        if self.started == 0:
+            await ctx.send(self.unmixedstr)
+            return
         if set(moves).issubset({'u','d','l','r'}):
-            if self.started == 0:
-                if self.started == 1:
-                    await ctx.send(self.unmixedstr)
-                    return
             error = False
             l = 0
             while error == False and l < len(moves):
@@ -91,7 +88,7 @@ class SlidingPuzzle(commands.Cog):
                         self.zeropos += 3
                 l += 1
             if error == True: await ctx.send(self.invalidmovestr)
-            await self.spprint()
+            await self.spdisplay(ctx)
             cnt = 0
             for n in range(9):
                 if self.grid[n] == n: cnt += 1
@@ -102,11 +99,11 @@ class SlidingPuzzle(commands.Cog):
             return  
         else: await ctx.send(self.invalidmovestr)
 
-    @commands.command(aliases = ['spp'])
-    async def spprint(self, ctx):
+    @commands.command(aliases = ['spd'])
+    async def spdisplay(self, ctx):
         outputstr = ''
         cnt = 0
-        offset = 9 if self.wittyb else 0
+        offset = 9 if self.witty else 0
         for n in range(9):
             outputstr += self.emojis_w[self.grid[n]+offset]
             cnt += 1
@@ -115,10 +112,11 @@ class SlidingPuzzle(commands.Cog):
                 outputstr += '\n'
         await ctx.send(outputstr)
 
-    @commands.command()
+    @commands.command(aliases = ['spw'])
     @is_owner()
-    async def witty(self, ctx):
-        self.wittyb = not self.wittyb
+    async def spwitty(self, ctx):
+        self.witty = not self.witty
+        await ctx.send(f'Witty: {self.witty}')
 
 def setup(client):
     client.add_cog(SlidingPuzzle(client))

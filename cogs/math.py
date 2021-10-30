@@ -15,7 +15,7 @@ class Math(commands.Cog):
     async def prime(self, ctx, number):
         n = int(number)
         if n <= 1:
-            ctx.send('No.')
+            await ctx.send('No.')
             return
         verification = int(number)
         i = 2

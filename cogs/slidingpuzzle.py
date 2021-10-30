@@ -1,9 +1,10 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import is_owner
 import numpy
 from sympy.combinatorics.permutations import _af_parity
 
-class Witty(commands.Cog):
+class SlidingPuzzle(commands.Cog):
     
     def __init__(self, client):
         self.client = client
@@ -17,21 +18,21 @@ class Witty(commands.Cog):
     grid = numpy.zeros(9)
     started = 0
     zeropos = 0
+    wittyb = False
 
-    emojis = [
-        '<:39:860269430537060382>', '<:38:860269430562095104>', '<:37:860269430490791966>',
-        '<:36:860269430580051978>', '<:35:860269430629990412>', '<:34:860269430406381649>',
-        '<:33:860269430466674728>', '<:32:860269430369550337>', '<:0_:859762589503586304>',
-        '<:31:860269430385541120>'
+    emojis = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':white_large_square:',
+            '<:39:860269430537060382>', '<:38:860269430562095104>', '<:37:860269430490791966>',
+            '<:36:860269430580051978>', '<:35:860269430629990412>', '<:34:860269430406381649>',
+            '<:33:860269430466674728>', '<:32:860269430369550337>', '<:0_:859762589503586304>'
     ]
-    mixedstr = 'Wittwer has been mixed.'
-    remixedstr = 'Wittwer was already mixed, remixing now.'
-    unmixedstr = 'Wittwer isn\'t mixed yet.'
-    invalidmovestr = 'This is not a valid move.'
+    mixedstr = 'The grid has been mixed.'
+    remixedstr = 'The grid was already mixed, remixing now.'
+    unmixedstr = 'The grid isn\'t mixed yet.'
+    invalidmovestr = 'This is not a valid move; valid moves are a sequence of the letters u, d, l and r.'
     winstr = 'You won!'
 
-    @commands.command()
-    async def wmix(self, ctx):
+    @commands.command(aliases = ['sp'])
+    async def slidingpuzzle(self, ctx):
         if self.started == 1: await ctx.send(self.remixedstr)
         self.started = 1
         self.grid = numpy.arange(9)
@@ -44,13 +45,13 @@ class Witty(commands.Cog):
             if self.grid[n] == 8:
                 self.zeropos = n
                 break
-        await ctx.send(self.printwitty(self.grid))
+        await self.spprint()
         reshflstr = self.mixedstr+'\nThe grid has been reshuffled '+str(reshfl)+' times.'
         if reshfl == 1: reshflstr = reshflstr[:-2] + '.'
         await ctx.send(reshflstr)
 
-    @commands.command(aliases = ['m'])
-    async def move(self, ctx, moves):
+    @commands.command(aliases = ['spm'])
+    async def spmove(self, ctx, moves):
         if set(moves).issubset({'u','d','l','r'}):
             if self.started == 0:
                 if self.started == 1:
@@ -90,7 +91,7 @@ class Witty(commands.Cog):
                         self.zeropos += 3
                 l += 1
             if error == True: await ctx.send(self.invalidmovestr)
-            await ctx.send(self.printwitty(self.grid))
+            await self.spprint()
             cnt = 0
             for n in range(9):
                 if self.grid[n] == n: cnt += 1
@@ -101,17 +102,23 @@ class Witty(commands.Cog):
             return  
         else: await ctx.send(self.invalidmovestr)
 
-    # functions
-    def printwitty(self, arrayinput):
+    @commands.command(aliases = ['spp'])
+    async def spprint(self, ctx):
         outputstr = ''
         cnt = 0
+        offset = 9 if self.wittyb else 0
         for n in range(9):
-            outputstr += self.emojis[arrayinput[n]]
+            outputstr += self.emojis_w[self.grid[n]+offset]
             cnt += 1
             if cnt == 3:
                 cnt = 0
                 outputstr += '\n'
-        return outputstr
+        await ctx.send(outputstr)
+
+    @commands.command()
+    @is_owner()
+    async def witty(self, ctx):
+        self.wittyb = not self.wittyb
 
 def setup(client):
-    client.add_cog(Witty(client))
+    client.add_cog(SlidingPuzzle(client))

@@ -17,6 +17,9 @@ class Math(commands.Cog):
         try: n = int(number)
         except ValueError:
             raise MissingRequiredArgument
+        if math.log(number, 10) > 20:
+            await ctx.send('Number too big.')
+            return
         if n <= 1:
             await ctx.send('No.')
             return

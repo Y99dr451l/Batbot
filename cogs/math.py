@@ -16,7 +16,7 @@ class Math(commands.Cog):
     async def prime(self, ctx, number):
         try: n = int(number)
         except ValueError: raise MissingRequiredArgument
-        if math.log(n, 10) > 20:
+        if math.log(n, 10) > 15:
             await ctx.send('Number too big.')
             return
         if n <= 1:

@@ -61,7 +61,7 @@ class Math(commands.Cog):
             if steps > 128: outputstr = f'The {steps}th number in the Fibonacci sequence is {fibnew}.'
             await ctx.send(outputstr)
         elif seqstr == 'conway' or seqstr == 'con' or seqstr == 'c':
-            if steps > 200:
+            if steps > 26:
                 await ctx.send('Too many steps.')
                 return
             connew = '1'

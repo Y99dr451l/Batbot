@@ -38,7 +38,7 @@ class Misc(commands.Cog):
     async def send(self, ctx, message):
         last_word = message.split()[-1]
         if last_word.isdecimal() and last_word.length() == 18:
-            self.last_channel = last_word
+            self.last_channel = int(last_word)
             message = message[:-18]
         try:
             channel = self.client.get_channel(self.last_channel)

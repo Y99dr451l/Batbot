@@ -3,7 +3,6 @@ from discord.ext import commands
 from discord.ext.commands import is_owner
 import requests
 import json
-from multipledispatch import dispatch
 
 class Misc(commands.Cog):
 
@@ -36,7 +35,6 @@ class Misc(commands.Cog):
     
     @commands.command()
     @is_owner()
-    @dispatch(object, object, str)
     async def send(self, ctx, message):
         last_word = message.split()[-1]
         if last_word.isdecimal() and last_word.length() == 18:
@@ -49,8 +47,7 @@ class Misc(commands.Cog):
 
     @commands.command()
     @is_owner()
-    @dispatch(object, object, discord.Member, str)
-    async def send(self, ctx, user:discord.Member, message):
+    async def dm(self, ctx, user:discord.Member, message):
         await user.send(message)
 
 def setup(client):

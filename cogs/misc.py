@@ -13,6 +13,8 @@ class Misc(commands.Cog):
     async def on_ready(self):
         print(f'Cog {self} loaded.')
 
+    last_channel:str = None
+
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         print(f'{member} has left a server.')
@@ -35,15 +37,17 @@ class Misc(commands.Cog):
     
     @commands.command()
     @is_owner()
-    async def send(self, ctx, message):
-        last_word = message.split()[-1]
-        if last_word.isdecimal() and last_word.length() == 18:
-            self.last_channel = int(last_word)
-            message = message[:-18]
-        try:
+    async def send(self, ctx):
+        message = ctx.message.content[6:]
+        if len(message) > 18:
+            channel_id = message[-18:]
+            if channel_id.isdecimal():
+                self.last_channel = int(channel_id)
+                message = message[:-18]
+        if self.last_channel:
             channel = self.client.get_channel(self.last_channel)
             await channel.send(message)
-        except: await ctx.send("No channel set.")
+        else: await ctx.send("No channel set.")
 
     @commands.command()
     @is_owner()

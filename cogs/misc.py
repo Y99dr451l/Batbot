@@ -19,6 +19,13 @@ class Misc(commands.Cog):
     async def on_member_remove(self, member):
         print(f'{member} has left a server.')
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if isinstance(message.channel, discord.DMChannel or discord.GroupChannel):
+            if message.channel.recipient.id != self.client.owner_id:
+                owner = self.client.get_user(self.client.owner_id)
+                await owner.send(message.author.name+' ('+str(message.author.id)+'):\n'+message.content)
+
     @commands.command(aliases = ['lat', 'ping'])
     async def latency(self, ctx):
         await ctx.send(f'{round(self.client.latency*1000,4)}ms')
@@ -51,8 +58,17 @@ class Misc(commands.Cog):
 
     @commands.command()
     @is_owner()
-    async def dm(self, ctx, user:discord.Member, message):
-        await user.send(message)
+    async def dm(self, ctx):
+        message = ctx.message.content[4:]
+        if len(message) > 18:
+            user_id = message[-18:]
+            if user_id.isdecimal():
+                self.last_user = int(user_id)
+                message = message[:-18]
+        if self.last_user:
+            user = self.client.get_user(self.last_user)
+            await user.send(message)
+        else: await ctx.send("No channel set.")
 
 def setup(client):
     client.add_cog(Misc(client))

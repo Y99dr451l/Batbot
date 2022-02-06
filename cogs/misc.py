@@ -68,7 +68,7 @@ class Misc(commands.Cog):
         if self.last_user:
             user = self.client.get_user(self.last_user)
             await user.send(message)
-        else: await ctx.send("No channel set.")
+        else: await ctx.send("No user set.")
 
 def setup(client):
     client.add_cog(Misc(client))

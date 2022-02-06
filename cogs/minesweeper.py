@@ -25,26 +25,13 @@ class Minesweeper(commands.Cog):
 
     @commands.command(aliases = ['ms'])
     async def minesweeper(self, ctx, dimx=None, dimy=None, mines=None):
-        if (dimx or dimy or mines) == None:
-            await ctx.send('The necessary arguments are `dimx`, `dimy`and `mines`, in that order.')
-            return
-        self.running = False
-        self.revealed = 0
-        try:
-            self.dimx = int(dimx)
-            self.dimy = int(dimy)
-            self.mines = int(mines)
-        except ValueError:
-            raise MissingRequiredArgument
-        if (self.dimx or self.dimy or self.mines) < 0:
-            await ctx.send('Negative terms.')
-            return
-        if (self.dimx or self.dimy) < 2:
-            await ctx.send('Dimensions too small.')
-            return
-        if self.mines > self.dimx * self.dimy:
-            await ctx.send('Too many mines.')
-            return
+        self.running = False; self.revealed = 0
+        if (dimx or dimy or mines) == None: await ctx.send('The necessary arguments are `dimx`, `dimy`and `mines`, in that order.'); return
+        try: self.dimx = int(dimx); self.dimy = int(dimy); self.mines = int(mines)
+        except ValueError: await ctx.send('The arguments need to be integers.'); return
+        if (self.dimx or self.dimy or self.mines) < 0: await ctx.send('Negative terms.'); return
+        if (self.dimx or self.dimy) < 2: await ctx.send('Dimensions too small.'); return
+        if self.mines > self.dimx * self.dimy: await ctx.send('Too many mines.'); return
         self.visible = [[0 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
         i = 0
         if self.mines <= 0.5*self.dimx*self.dimy:
@@ -52,17 +39,13 @@ class Minesweeper(commands.Cog):
             while i < self.mines:
                 rx = self.rng.integers(1, self.dimx)
                 ry = self.rng.integers(1, self.dimy)
-                if not self.field[ry][rx] == 9:
-                    self.field[ry][rx] = 9
-                    i += 1
+                if not self.field[ry][rx] == 9: self.field[ry][rx] = 9; i += 1
         else:
             self.field = [[9 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
             while i < self.dimx*self.dimy-self.mines:
                 rx = self.rng.integers(1, self.dimx)
                 ry = self.rng.integers(1, self.dimy)
-                if not self.field[ry][rx] == 0:
-                    self.field[ry][rx] = 0
-                    i += 1
+                if not self.field[ry][rx] == 0: self.field[ry][rx] = 0; i += 1
         for j in range (1, self.dimy+1):
             for i in range (1, self.dimx+1):
                 if not self.field[j][i] == 9:
@@ -101,20 +84,11 @@ class Minesweeper(commands.Cog):
 
     @commands.command(aliases = ['msm'])
     async def msmove(self, ctx, strmovex=None, strmovey=None):
-        if strmovex == None:
-            await ctx.send('The necessary arguments are `x` and `y`.\nThe x-axis goes from left to right and the y-axis from top to bottom, both starting at 1.')
-            return
-        if not self.running:
-            await ctx.send('No game is running. Start one with the `ms`-command.')
-            return
-        try:
-            movex = int(strmovex)
-            movey = int(strmovey)
-        except ValueError:
-            raise MissingRequiredArgument
-        if (movex or movey) < 1 or movex > self.dimx or movey > self.dimy:
-            await ctx.send('Coordinates out of bounds.')
-            return
+        if (strmovex or strmovey) == None: await ctx.send('The necessary arguments are `x` and `y` (`x` goes left to right, `y` top to bottom, both start at 1.'); return
+        if not self.running: await ctx.send('No game is running. Start one with the `ms`-command.'); return
+        try: movex = int(strmovex); movey = int(strmovey)
+        except ValueError: await ctx.send('The arguments need to be integers.'); return
+        if (movex or movey) < 1 or movex > self.dimx or movey > self.dimy: await ctx.send('Coordinates out of bounds.'); return
         if self.visible[movey][movex] == 1:
             fcount = 0
             for i in range(movex-1, movex+2):
@@ -124,7 +98,7 @@ class Minesweeper(commands.Cog):
                 for i in range(movex-1, movex+2):
                     for j in range(movey-1, movey+2):
                         if not self.visible[j][i]: self.reveal(j, i)
-        if self.field[movey][movex] == 9:
+        if self.field[movey][movex] == 9 and not self.visible[movey][movex] == 2:
             await ctx.send('GAME OVER - You died. :dizzy_face:')
             self.visible = [[1 for j in range(0, self.dimy+2)] for i in range(0, self.dimx+2)]
             self.running = False
@@ -145,11 +119,11 @@ class Minesweeper(commands.Cog):
 
     @commands.command(aliases = ['msf'])
     async def msflag(self, ctx, strmovex, strmovey):
-        movex = int(strmovex)
-        movey = int(strmovey)
-        if (movex or movey) < 1 or movex > self.dimx or movey > self.dimy:
-            await ctx.send('Coordinates out of bounds.')
-            return
+        if (strmovex or strmovey) == None: await ctx.send('The necessary arguments are `x` and `y` (`x` goes left to right, `y` top to bottom, both start at 1.'); return
+        if not self.running: await ctx.send('No game is running. Start one with the `ms`-command.'); return
+        try: movex = int(strmovex); movey = int(strmovey)
+        except ValueError: await ctx.send('The arguments need to be integers.'); return
+        if (movex or movey) < 1 or movex > self.dimx or movey > self.dimy: await ctx.send('Coordinates out of bounds.'); return
         if self.visible[movey][movex] == 1:
             ccount = 0
             for i in range(movex-1, movex+2):

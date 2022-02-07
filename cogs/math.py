@@ -1,6 +1,4 @@
-import discord
 from discord.ext import commands
-from discord.ext.commands.errors import MissingRequiredArgument
 import math
 
 class Math(commands.Cog):
@@ -15,40 +13,27 @@ class Math(commands.Cog):
     @commands.command(aliases = ['pf'])
     async def prime(self, ctx, number):
         try: n = int(number)
-        except ValueError: raise MissingRequiredArgument
-        if math.log(n, 10) > 15:
-            await ctx.send('Number too big.')
-            return
-        if n <= 1:
-            await ctx.send('No.')
-            return
+        except: await ctx.send('Argument is not an integer.'); return
+        if math.log(n, 10) > 15: await ctx.send('Number too big.'); return
+        if n <= 1: await ctx.send('No.'); return
         verification = n
         i = 2
         factors = []
         while i * i <= n:
             if n % i: i += 1
-            else:
-                n //= i
-                factors.append(i)
+            else: n //= i; factors.append(i)
         if n > 1 or verification == 1: factors.append(n)
         if verification in factors: await ctx.send(f'{verification} is a prime number!')
         else: await ctx.send(f'The prime factors of {verification} are '+f'{factors}'[1:-1]+'.')
     
     @commands.command(aliases = ['seq'])
     async def sequence(self, ctx, seqstr=None, numberstr=None):
-        if seqstr == None:
-            await ctx.send('The possible arguments currently are `fibonacci`and `conway`.')
-            return
-        if numberstr == None:
-            await ctx.send('Give the amount of steps when calling the command.')
-            return
+        if seqstr == None: await ctx.send('The possible arguments currently are `fibonacci` and `conway`.'); return
+        if numberstr == None: await ctx.send('Give the amount of steps when calling the command.'); return
         try: steps = int(numberstr)
-        except ValueError:
-            raise MissingRequiredArgument
+        except: await ctx.send('Argument is not an integer.'); return
         if seqstr == 'fibonacci' or seqstr == 'fib' or seqstr == 'f':
-            if steps > 2000:
-                await ctx.send('Too many steps.')
-                return
+            if steps > 2000: await ctx.send('Too many steps.'); return
             fibnew = 1
             fibold = 0
             outputstr = f'{fibnew}, '
@@ -59,11 +44,8 @@ class Math(commands.Cog):
                 if steps <= 128: outputstr += f'{fibnew}, '
             outputstr = outputstr[:-2]
             if steps > 128: outputstr = f'The {steps}th number in the Fibonacci sequence is {fibnew}.'
-            await ctx.send(outputstr)
         elif seqstr == 'conway' or seqstr == 'con' or seqstr == 'c':
-            if steps > 26:
-                await ctx.send('Too many steps.')
-                return
+            if steps > 26: await ctx.send('Too many steps.'); return
             connew = '1'
             outputstr = connew + ', '
             for i in range(2, steps+1):
@@ -77,7 +59,7 @@ class Math(commands.Cog):
                 outputstr += connew + ', '
             outputstr = outputstr[:-2]
             if len(outputstr) > 2000: outputstr = f'The {steps}th number in the Conway sequence is ' + connew + '.'
-            await ctx.send(outputstr)
+        await ctx.send(outputstr)
 
 def setup(client):
     client.add_cog(Math(client))

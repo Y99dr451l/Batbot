@@ -1,23 +1,22 @@
-# from discord.ext.commands.help import MinimalHelpCommand
 import os
+
 import discord
 from discord import Intents
 from discord.ext import commands
 from discord.ext.commands import is_owner
-from discord.ext.commands.errors import MissingPermissions, MissingRequiredArgument
+
 from keep_alive import keep_alive
 
-client = commands.Bot(command_prefix = ['$', '$ '], owner_id = 287306245893914624, intents = Intents.all())
+client = commands.Bot(command_prefix = '$', owner_id = 287306245893914624, intents = Intents.all())
+setattr(client, 'url', 'https://github.com/Y99dr451l/Batbot')
 cog_path = 'cogs.'
 other_cog_path = './cogs'
 
 @client.event
 async def on_ready():
-    print(f'Bot is almost ready.')
     for guild in client.guilds:
         print(f'On {guild} ({guild.id})')
     await client.change_presence(activity=discord.Game('currently testing'), status=discord.Status.idle)
-    print(f'Bot is ready and logged in as {client.user}'.format(client))
 
 @client.command()
 @is_owner()
@@ -39,7 +38,7 @@ checks = ['error', 'unloaded', 'loaded', 'reloaded']
 @is_owner()
 async def reload(ctx, extension):
     output = ''
-    if extension == 'all':
+    if extension == (None or 'all'):
         for filename in os.listdir(other_cog_path):
             if filename.endswith('.py'): output += reloadext(filename[:-3])
     else: output = reloadext(extension)
@@ -51,14 +50,7 @@ def reloadext(extension):
     except: pass
     try: client.load_extension(cog_path+f'{extension}'); check += 2
     except: pass
-    return f'{extension}: {checks[check]}\n'
-
-# ERRORS
-@client.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound) and not ctx.message.content.endswith('$'): await ctx.send('Invalid command.')
-    elif isinstance(error, MissingRequiredArgument): await ctx.send('Invalid or missing argument.')
-    elif isinstance(error, MissingPermissions): await ctx.send('Missing permissions.')
+    return f'`{extension}`: {checks[check]}\n'
 
 for filename in os.listdir(other_cog_path):
     if filename.endswith('.py'): client.load_extension(cog_path+f'{filename[:-3]}')

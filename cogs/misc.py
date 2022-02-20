@@ -40,7 +40,7 @@ class Misc(commands.Cog):
     @commands.command()
     @is_owner()
     async def activity(self, ctx):
-        self.activitytext = ctx.message.content[9:]
+        self.cactivity = ctx.message.content[9:]
         await self.client.change_presence(activity=discord.Game(name=self.cactivity), status=self.cstatus)
 
     @commands.command()

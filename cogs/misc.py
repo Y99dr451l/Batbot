@@ -12,6 +12,8 @@ class Misc(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.cstatus = self.statuses('online')
+        self.cactivity = None
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -30,15 +32,16 @@ class Misc(commands.Cog):
     @commands.command()
     @is_owner()
     async def status(self, ctx, arg):
-        if arg in self.statuses.keys(): await self.client.change_presence(status=self.statuses[arg])
+        if arg in self.statuses.keys():
+            self.cstatus = self.statuses[arg]
+            await self.client.change_presence(activity=discord.Game(name=self.cactivity), status=self.cstatus)
         else: await ctx.send(f'`{arg}` is not a valid status.')
 
     @commands.command()
     @is_owner()
     async def activity(self, ctx):
-        name = ctx.message.content[9:]
-        try: await self.client.change_presence(activity=discord.Game(name=name))
-        except Exception as e: await ctx.send(f"```{e}```")
+        self.activitytext = ctx.message.content[9:]
+        await self.client.change_presence(activity=discord.Game(name=self.cactivity), status=self.cstatus)
 
     @commands.command()
     async def info(self, ctx):

@@ -1,10 +1,12 @@
-import discord
-from discord.ext import commands
-from discord.ext.commands import is_owner
-import requests
 import json
 import time
+
+import discord
 import numpy
+import requests
+from discord.ext import commands
+from discord.ext.commands import is_owner
+
 
 class Misc(commands.Cog):
 
@@ -34,19 +36,21 @@ class Misc(commands.Cog):
     @commands.command()
     @is_owner()
     async def activity(self, ctx):
-        await self.client.change_presence(activity=discord.CustomActivity(f'{ctx.message.content[9:]}'))
+        name = ctx.message.content[9:]
+        try: await self.client.change_presence(activity=discord.Game(name=name))
+        except Exception as e: await ctx.send(f"```{e}```")
 
     @commands.command()
     async def info(self, ctx):
         title = f'{self.client.user}'
-        description = f'''
-Owner: {self.client.get_user(self.client.owner_id)}
-Uptime: {self.uptimecalc()}
-Ping: {round(self.client.latency*1000,4)}ms
-Extensions: {str(self.client.extensions.keys())[11:-2]}'''
-        url = 'https://github.com/Y99dr451l/Batbot'
-        embed = discord.Embed(title=title, description=description, url=url, color=self.rng.integers(0, 16777215, dtype=int))
-        embed.set_footer(text=f'Information requested by: {ctx.author.display_name}')
+        url = self.client.url
+        color = self.rng.integers(0, 255, dtype=int) + self.rng.integers(0, 255, dtype=int)*256 + self.rng.integers(0, 255, dtype=int)*256*256
+        embed = discord.Embed(title=title, url=url, color=color)
+        embed.add_field(name='Owner', value=f'{self.client.get_user(self.client.owner_id)}')
+        embed.add_field(name='Uptime', value=f'{self.uptimecalc()}')
+        embed.add_field(name='Latency', value=f'{round(self.client.latency*1000,4)}ms')
+        embed.add_field(name='Extensions', value=f'{str(self.client.extensions.keys())[11:-2]}', inline=False)
+        embed.set_footer(text=f'Information requested by: {ctx.author.display_name}\nColour: {hex(color)}')
         await ctx.send(embed=embed)
     
     def uptimecalc(self):

@@ -12,7 +12,7 @@ class Misc(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.cstatus = self.statuses('online')
+        self.cstatus = discord.Status.online
         self.cactivity = None
 
     @commands.Cog.listener()

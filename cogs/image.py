@@ -47,7 +47,7 @@ class Image(commands.Cog):
             try: kernel = self.kernels[arg]
             except: await ctx.send('Argument not valid.\n'+self.arguments()); return
         # image
-        if len(ctx.message.attachments) and 'image' not in ctx.message.attachments[0].content_type:
+        if len(ctx.message.attachments) and 'image' in ctx.message.attachments[0].content_type:
             try:
                 input = await ctx.message.attachments[0].read()
                 image_input = PIL.Image.open(BytesIO(input))

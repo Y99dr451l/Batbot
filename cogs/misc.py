@@ -13,7 +13,7 @@ class Misc(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.cstatus = discord.Status.online
-        self.cactivity = None
+        self.cactivity = ''
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -40,7 +40,8 @@ class Misc(commands.Cog):
     @commands.command()
     @is_owner()
     async def activity(self, ctx):
-        self.cactivity = ctx.message.content[9:]
+        content = ctx.message.content
+        if len(content) > 10: self.cactivity = content[10:]
         await self.client.change_presence(activity=discord.Game(name=self.cactivity), status=self.cstatus)
 
     @commands.command()

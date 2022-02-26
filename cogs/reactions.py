@@ -12,51 +12,59 @@ class Reactions(commands.Cog):
     async def on_ready(self):
         print(f'Cog {self} loaded.')
 
-    #bools
-    en_lmao = True
-    en_yeet = True
-    en_bruh = True
-    en_ping = True
-    en_aaa = True
+    bools = {
+        'lmao': True,
+        'yeet': True,
+        'bruh': True,
+        '@': True,
+        'aaa': True,
+        'nice': True,
+    }
+
+    lmaos = {
+        181681253899042817: '<:lmaobassam:778739200257818636>',
+        287306245893914624: '<:lmaobatman:778740489960292352>',
+        449557998004862987: '<:lmaojonas:862717541780160542>',
+        'default': '<:lmao:880102637956120577>',
+    }
+
+    reacs = {
+        'yeet': '<:yeet:744153144040095784>',
+        'bruh': '<:bruh:786383332035788832>',
+        '@': '<:pandaping:822443133139812394>',
+        'nice': '👌',
+    }
 
     rng = numpy.random.default_rng()
 
-    # admin commands
-    @commands.command(name = 'rc')
+    @commands.command()
     @is_owner()
-    async def reactions(self, ctx, argstr='.'):
-        argstr = argstr.lower()
-        if argstr == 'lmao': self.en_lmao = not self.en_lmao
-        elif argstr == 'yeet': self.en_yeet = not self.en_yeet
-        elif argstr == 'bruh': self.en_bruh = not self.en_bruh
-        elif argstr == 'ping': self.en_ping = not self.en_ping
-        elif argstr == 'aaa': self.en_aaa = not self.en_aaa
-        await ctx.send(f'lmao: {self.en_lmao}\nyeet: {self.en_yeet}\nbruh: {self.en_bruh}\nping: {self.en_ping}\naaa: {self.en_aaa}')
+    async def rc(self, ctx):
+        content = ctx.message.content
+        if len(content) > 4:
+            argstr = content[4:].lower()
+            for key in self.bools.keys():
+                if key in argstr: self.bools[key] = not self.bools[key]
+        output = ''
+        for (key, value) in self.bools.items(): output += f'{key}: {value}\n'
+        await ctx.send(output)
 
-    # events
     @commands.Cog.listener()
     async def on_message(self, ctx):
         if not ctx.author == self.client.user:
             content = ctx.content.lower()
             authorid = ctx.author.id
-            if self.en_lmao and "lmao" in content:
-                if authorid == 181681253899042817: await ctx.add_reaction('<:lmaobassam:778739200257818636>')
-                elif authorid == 287306245893914624: await ctx.add_reaction('<:lmaobatman:778740489960292352>')
-                elif authorid == 449557998004862987: await ctx.add_reaction('<:lmaojonas:862717541780160542>')
-                else: await ctx.add_reaction('<:lmao:880102637956120577>')
-            if self.en_yeet and "yeet" in content: await ctx.add_reaction('<:yeet:744153144040095784>')
-            if self.en_bruh and "bruh" in content: await ctx.add_reaction('<:bruh:786383332035788832>')
-            if self.en_ping and '@' in content: await ctx.add_reaction('<:pandaping:822443133139812394>')
-            if self.en_aaa and self.oneletter(content) and len(content) > 2: await ctx.channel.send(content[0].upper()*min(self.rng.integers(1,50)*len(content), 2000))
-
-    def oneletter(self, content):
-        first = content[0]
-        check = 1
-        for i in range(1, len(content)):
-            if not content[i] == first:
-                check = 0
-                break
-        return check
+            if self.bools['lmao'] and 'lmao' in content:
+                if authorid in self.lmaos.keys(): await ctx.add_reaction(self.lmaos[authorid])
+                else: await ctx.add_reaction(self.lmaos['default'])
+            for key in self.reacs.keys():
+                if self.bools[key] and key in content: await ctx.add_reaction(self.reacs[key])
+            if self.bools['aaa'] and len(content) > 2:
+                first = content[0]
+                check = True
+                for i in range(1, len(content)):
+                    if not content[i] == first: check = False; break
+                if check: await ctx.channel.send(first.upper()*self.rng.integers(1,50))
 
 def setup(client):
     client.add_cog(Reactions(client))

@@ -1,4 +1,5 @@
 import os
+import time
 
 import discord
 from discord import Intents
@@ -9,6 +10,7 @@ from keep_alive import keep_alive
 
 client = commands.Bot(command_prefix = '$', owner_id = 287306245893914624, intents = Intents.all())
 setattr(client, 'url', 'https://github.com/Y99dr451l/Batbot')
+setattr(client, 'starttime', time.monotonic())
 cog_path = 'cogs.'
 other_cog_path = './cogs'
 

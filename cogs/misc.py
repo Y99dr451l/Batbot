@@ -14,13 +14,12 @@ class Misc(commands.Cog):
         self.client = client
         self.cstatus = discord.Status.online
         self.cactivity = ''
+        self.rng = numpy.random.default_rng()
+        self.starttime = self.client.starttime
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f'Cog {self} loaded.')
-
-    rng = numpy.random.default_rng()
-    starttime = time.monotonic()
 
     statuses = {
         'online': discord.Status.online,
@@ -116,6 +115,13 @@ class Misc(commands.Cog):
             user = self.client.get_user(self.last_user)
             await user.send(message)
         else: await ctx.send("No user set.")
+    
+    @commands.command()
+    @is_owner()
+    async def exec(self, ctx):
+        message = ctx.message.content[6:]
+        try: exec(message)
+        except Exception as e: await ctx.send(f'```{e}```'); return
 
 def setup(client):
     client.add_cog(Misc(client))

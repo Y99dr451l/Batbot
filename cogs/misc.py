@@ -91,51 +91,6 @@ class Misc(commands.Cog):
     
     @commands.command()
     @is_owner()
-    async def send(self, ctx):
-        message = ctx.message.content[6:]
-        if len(message) > 18:
-            channel_id = message[-18:]
-            if channel_id.isdecimal():
-                self.last_channel = int(channel_id)
-                message = message[:-18]
-        if self.last_channel:
-            channel = self.client.get_channel(self.last_channel)
-            await channel.send(message)
-        else: await ctx.send("No channel set.")
-
-    @commands.command(name = '+')
-    @is_owner()
-    async def react(self, ctx):
-        message = ctx.message.content[3:]
-        if len(message) > 18:
-            channel_id = message[-18:]
-            if channel_id.isdecimal():
-                self.last_channel = int(channel_id)
-                message = message[:-18]
-        if self.last_channel:
-            channel = self.client.get_channel(self.last_channel)
-            dest = await channel.fetch_message(channel.last_message_id)
-            try: dest.add_reaction(message)
-            except: await ctx.send("No valid emoji.")
-        else: await ctx.send("No channel set.")
-
-
-    @commands.command()
-    @is_owner()
-    async def dm(self, ctx):
-        message = ctx.message.content[4:]
-        if len(message) > 18:
-            user_id = message[-18:]
-            if user_id.isdecimal():
-                self.last_user = int(user_id)
-                message = message[:-18]
-        if self.last_user:
-            user = self.client.get_user(self.last_user)
-            await user.send(message)
-        else: await ctx.send("No user set.")
-    
-    @commands.command()
-    @is_owner()
     async def exec(self, ctx):
         message = ctx.message.content[6:]
         try: exec('global output; global = "";' + message)

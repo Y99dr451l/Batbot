@@ -7,6 +7,7 @@ import requests
 from discord.ext import commands
 from discord.ext.commands import is_owner
 
+output = ''
 
 class Misc(commands.Cog):
 
@@ -102,6 +103,23 @@ class Misc(commands.Cog):
             await channel.send(message)
         else: await ctx.send("No channel set.")
 
+    @commands.command(name = '+')
+    @is_owner()
+    async def react(self, ctx):
+        message = ctx.message.content[3:]
+        if len(message) > 18:
+            channel_id = message[-18:]
+            if channel_id.isdecimal():
+                self.last_channel = int(channel_id)
+                message = message[:-18]
+        if self.last_channel:
+            channel = self.client.get_channel(self.last_channel)
+            dest = await channel.fetch_message(channel.last_message_id)
+            try: dest.add_reaction(message)
+            except: await ctx.send("No valid emoji.")
+        else: await ctx.send("No channel set.")
+
+
     @commands.command()
     @is_owner()
     async def dm(self, ctx):
@@ -120,8 +138,9 @@ class Misc(commands.Cog):
     @is_owner()
     async def exec(self, ctx):
         message = ctx.message.content[6:]
-        try: exec(message)
+        try: exec('global output; global = "";' + message)
         except Exception as e: await ctx.send(f'```{e}```'); return
+        if len(output): await ctx.send(output)
 
 def setup(client):
     client.add_cog(Misc(client))

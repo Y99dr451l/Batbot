@@ -26,6 +26,7 @@ class Image(commands.Cog):
         'boxblur': 1/9*numpy.ones((3,3), dtype=float),
         'gaussblur': 1/16*numpy.array([[1.,2.,1.],[2.,4.,2.],[1.,2.,1.]], dtype=float),
         'emboss': numpy.array([[-2,-1,0],[-1,1,1],[0,1,2]]),
+        'gameoflife': numpy.array([[1,1,1],[1,0,1],[1,1,1]]),
     }
     
     def arguments(self):
@@ -75,6 +76,23 @@ class Image(commands.Cog):
             bytes.seek(0)
             await ctx.send(content='```'+str(kernel)+'```', file=discord.File(bytes, filename='output.png'))
         except Exception as e: await ctx.send(f'Error during processing.\n```{e}```'); return
+
+    @commands.command(aliases = ['gol'])
+    async def gameoflife(self, ctx, width=100, height=100, iterations=100):
+        try: width = int(width); height = int(height); iterations = int(iterations)
+        except: await ctx.send('Invalid arguments; expected are `width`, `height`, ìterations` as integers, defaults are 100.'); return
+        if width*height*iterations > 10000000: await ctx.send('Arguments too large; their product must be smaller than 1e7'); return
+        arr = (numpy.random.rand(height, width)*2).astype('uint8')
+        images = []
+        images.append(PIL.Image.fromarray(arr*255).convert('L'))
+        for i in range(iterations):
+            convarr = numpy.array(convolve(arr, self.kernels['gameoflife'], mode='constant', cval=0).astype('uint8'))
+            arr = numpy.logical_or((convarr == 3), numpy.logical_and((arr == 1), numpy.logical_and((1 < convarr), (convarr < 4)))).astype('uint8')
+            images.append(PIL.Image.fromarray(arr*255).convert('L'))
+        bytes = BytesIO()
+        images[0].save(bytes, format='gif', save_all=True, append_images=images[1:], optimize=True, duration=50, loop=0, palette='L')
+        bytes.seek(0)
+        await ctx.send(content=f'{width}x{height}, {iterations} iterations', file=discord.File(bytes, filename='output.gif'))
 
 def setup(client):
     client.add_cog(Image(client))

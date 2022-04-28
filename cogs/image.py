@@ -82,7 +82,8 @@ class Image(commands.Cog):
         try: width = int(width); height = int(height); iterations = int(iterations)
         except: await ctx.send('Invalid arguments; expected are `width`, `height`, ìterations` as integers, defaults are 100.'); return
         if width*height*iterations > 10000000: await ctx.send('Arguments too large; their product must be smaller than 1e7'); return
-        arr = (numpy.random.rand(height, width)*2).astype('uint8')
+        if (width or height or iterations) == 0: await ctx.send('Arguments should not be 0.'+(ctx.guild and ctx.guild.get_member('723418507362041876'))*'\n<@723418507362041876> <:pandastare:851850401569701908>'); return
+        arr = (numpy.random.rand(height, width, dtype='uint8')*2)
         images = []
         images.append(PIL.Image.fromarray(arr*255).convert('L'))
         for i in range(iterations):

@@ -105,7 +105,7 @@ class SlidingPuzzle(commands.Cog):
         cnt = 0
         offset = 9 if self.witty else 0
         for n in range(9):
-            outputstr += self.emojis_w[self.grid[n]+offset]
+            outputstr += self.emojis[self.grid[n]+offset]
             cnt += 1
             if cnt == 3:
                 cnt = 0
